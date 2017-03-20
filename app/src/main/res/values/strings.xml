@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">GdzieJestes</string>
+    <string name="create_one">Nie masz jeszcze konta? Stwórz je!</string>
+    <string name="password">Haslo</string>
+    <string name="email">Email</string>
+    <string name="login">Zaloguj</string>
+    <string name="already_account">Juz masz konto? Zaloguj</string>
+    <string name="register">Rejestruj</string>
+    <string name="name">Imie</string>
 </resources>

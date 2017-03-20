@@ -1,4 +1,4 @@
-package com.gdziejestes.ui.mapfragment;
+package com.gdziejestes.ui.fragments.mapfragment;
 
 /**
  * Created by Dominik on 2017-03-16.
