@@ -1,5 +1,7 @@
 package com.gdziejestes.core.dagger;
 
+import android.content.Context;
+
 import com.gdziejestes.common.Authorization;
 
 import javax.inject.Singleton;
@@ -10,18 +12,12 @@ import dagger.Provides;
 /**
  * Created by Dominik on 2017-03-21.
  */
-@Module
+@Module(includes = AppModule.class)
 public class AuthModule {
-
-    private final Authorization auth;
-
-    public AuthModule(Authorization auth) {
-        this.auth = auth;
-    }
 
     @Provides
     @Singleton
-    public Authorization getAuth() {
-        return auth;
+    public Authorization getAuth(Context context) {
+        return new Authorization(context);
     }
 }

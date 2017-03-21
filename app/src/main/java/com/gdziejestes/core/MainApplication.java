@@ -26,7 +26,7 @@ public class MainApplication  extends Application {
         super.onCreate();
 
         getAppComponent();
-        auth = appComponent.getAuthorization();
+        auth = appComponent.getAuth();
         //authorization
        // auth = new Authorization(this);
     }
@@ -43,7 +43,7 @@ public class MainApplication  extends Application {
 
     public AppComponent getAppComponent(){
         if(appComponent == null){
-            appComponent =  DaggerAppComponent.builder()
+            appComponent = DaggerAppComponent.builder()
                     .appModule(new AppModule(this))
                     .build();
         }
