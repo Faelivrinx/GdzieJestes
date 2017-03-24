@@ -17,8 +17,6 @@ public class BaseAuthenticationActivity extends BaseActivity {
 
     private Authorization auth;
 
-    @Inject
-    Authorization auth1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

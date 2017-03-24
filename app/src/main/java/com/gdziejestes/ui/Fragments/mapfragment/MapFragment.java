@@ -6,5 +6,7 @@ package com.gdziejestes.ui.fragments.mapfragment;
  * Fragment mapy. W tym packu umieszczamy wszystkie widoki.
  */
 
+//TODO: Cześć głównej aktywności, google maps
+
 public class MapFragment {
 }

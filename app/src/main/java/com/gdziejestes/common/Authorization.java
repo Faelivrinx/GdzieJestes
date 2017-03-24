@@ -47,7 +47,7 @@ public class Authorization {
     }
 
     public void login(){
-        this.user = new User("Dominik", "jurasz.do@gmaiol.com", "Wow");
+       // this.user = new User("Dominik", "jurasz.do@gmaiol.com", "Wow");
         setAuthToken("AUTH");
     }
 
