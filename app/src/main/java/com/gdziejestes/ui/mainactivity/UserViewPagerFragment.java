@@ -1,4 +1,4 @@
-package com.gdziejestes.ui.views;
+package com.gdziejestes.ui.mainactivity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

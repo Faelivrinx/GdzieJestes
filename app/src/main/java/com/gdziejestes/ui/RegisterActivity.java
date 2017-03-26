@@ -1,9 +1,10 @@
-package com.gdziejestes.ui.activities;
+package com.gdziejestes.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.gdziejestes.R;
+import com.gdziejestes.ui.activities.BaseActivity;
 
 /**
  * Created by Dominik on 2017-03-20.
