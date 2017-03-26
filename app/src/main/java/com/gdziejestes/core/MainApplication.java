@@ -27,6 +27,7 @@ public class MainApplication  extends Application {
 
         getAppComponent();
         auth = appComponent.getAuth();
+        auth.login();
        //auth.login();
        // auth = new Authorization(this);
     }
