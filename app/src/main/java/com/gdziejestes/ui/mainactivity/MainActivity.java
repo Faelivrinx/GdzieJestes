@@ -5,12 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 
 import com.gdziejestes.R;
-import com.gdziejestes.data.inmemory.request.Contacts;
+
 import com.gdziejestes.model.User;
-import com.gdziejestes.ui.activities.BaseAuthenticationActivity;
-import com.gdziejestes.ui.fragments.contacts.UserViewPagerFragment;
+import com.gdziejestes.ui.BaseAuthenticationActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseAuthenticationActivity implements OnMapReadyCallback, ViewPager.OnPageChangeListener {
+public class MainActivity extends BaseAuthenticationActivity implements OnMapReadyCallback, ViewPager.OnPageChangeListener, MainActivityContract.Views {
 
     private GoogleMap mMap;
     private List<User> users;
@@ -32,24 +32,18 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     @BindView(R.id.activity_main_viewPager)
     ViewPager viewPager;
 
+    private MainActivityContract.Actions presenter;
 
-
-
-    //FragmentActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        presenter = new MainActivityPresenter(this);
         users = new ArrayList<>();
-        bus.post(new Contacts.GetContactRequest());
-
-
 
         viewPager.addOnPageChangeListener(this);
-
-
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.activity_main_map);
@@ -57,10 +51,37 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.loadContacts();
+        notifyAdapterAboutChanged();
+    }
+
+    private void notifyAdapterAboutChanged() {
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                if(users != null && !users.isEmpty()){
+                    User user = users.get(position);
+                    return UserViewPagerFragment.newInstance(user);
+                }
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return users.size();
+            }
+        });
+
+
+
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
         if(users != null && !users.isEmpty()){
             changeViewPagerZoomMap(users.get(0));
         }
@@ -94,23 +115,21 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user.getCoordinate(), 15));
     }
 
-    @Subscribe
-    public void onGetContactResponse(Contacts.GetContactResponse response){
-        users.clear();
-        users.addAll(response.Users);
 
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                User user = users.get(position);
-                return UserViewPagerFragment.newInstance(user);
-            }
-
-            @Override
-            public int getCount() {
-                return users.size();
-            }
-        });
+    @Override
+    public void showContacts(List<User> users) {
+        this.users.clear();
+        this.users.addAll(users);
+        notifyAdapterAboutChanged();
     }
 
+    @Override
+    public void updateGoogleMap(User user) {
+
+    }
+
+    @Override
+    public void showErrorToast(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+    }
 }

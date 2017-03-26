@@ -25,7 +25,7 @@ public class ContactRepository  implements MainActivityContract.repository{
             user.setEmail(null);
             user.setPassword(null);
             user.setAvatarUrl(null);
-            user.setCoordinate(new LatLng(40.0, 40.0));
+            user.setCoordinate(new LatLng(40.0 + i, 40.0 + i));
             users.add(user);
         }
 

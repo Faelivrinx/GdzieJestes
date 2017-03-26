@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.gdziejestes.R;
-import com.gdziejestes.ui.activities.BaseActivity;
 import com.gdziejestes.ui.mainactivity.MainActivity;
 
 import butterknife.BindView;

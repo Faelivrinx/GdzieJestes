@@ -4,7 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gdziejestes.ui.activities.MainActivity">
+    tools:context="com.gdziejestes.ui.mainactivity.MainActivity">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -13,7 +13,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.gdziejestes.ui.activities.MainActivity" />
+        tools:context="com.gdziejestes.ui.mainactivity.MainActivity" />
 
     <RelativeLayout
         android:layout_width="match_parent"
