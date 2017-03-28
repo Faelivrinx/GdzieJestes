@@ -7,4 +7,5 @@
     <string name="already_account">Juz masz konto? Zaloguj</string>
     <string name="register">Rejestruj</string>
     <string name="name">Imie</string>
+    <string name="username">Login</string>
 </resources>

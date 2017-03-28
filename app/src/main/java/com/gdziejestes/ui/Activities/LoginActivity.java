@@ -9,7 +9,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gdziejestes.R;
-import com.gdziejestes.core.MainApplication;
+import com.gdziejestes.async.AsyncLogin;
+import com.gdziejestes.interfaces.IAsyncLogin;
+import com.gdziejestes.model.User;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,13 +20,13 @@ import butterknife.ButterKnife;
  * Created by Dominik on 2017-03-20.
  */
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener, IAsyncLogin{
 
     @BindView(R.id.activity_login_btnLogin)
     AppCompatButton btnLogin;
 
-    @BindView(R.id.activity_login_etEmail)
-    EditText etEmail;
+    @BindView(R.id.activity_login_EtUsername)
+    EditText etUsername;
 
     @BindView(R.id.activity_login_EtPassword)
     EditText etPassword;
@@ -42,7 +44,31 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         if(view == btnLogin){
-            startActivity(new Intent(this, MainActivity.class));
+            String username = etUsername.getText().toString();
+            String password = etPassword.getText().toString();
+
+            User user =  new User(username, password);
+            user.SignInToDatabase();
+
+            //AsyncLogin asyncLogin = new AsyncLogin ();
+            //asyncLogin.delegate = this;
+            //asyncLogin.execute(username,password);
+
         }
+    }
+
+    @Override
+    public void processFinish(String output) {
+        if(!output.isEmpty())
+        {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("jsonData", output);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(this, "Nie udało się zalogować", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
