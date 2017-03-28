@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.gdziejestes.R;
 import com.gdziejestes.async.AsyncLogin;
+import com.gdziejestes.common.Authorization;
 import com.gdziejestes.interfaces.IAsyncLogin;
 import com.gdziejestes.model.User;
 
@@ -31,6 +32,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @BindView(R.id.activity_login_EtPassword)
     EditText etPassword;
 
+    User user;
+    String username, password;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,15 +48,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onClick(View view) {
         if(view == btnLogin){
-            String username = etUsername.getText().toString();
-            String password = etPassword.getText().toString();
 
-            User user =  new User(username, password);
-            user.SignInToDatabase();
+            username = etUsername.getText().toString();
+            password = etPassword.getText().toString();
 
-            //AsyncLogin asyncLogin = new AsyncLogin ();
-            //asyncLogin.delegate = this;
-            //asyncLogin.execute(username,password);
+            AsyncLogin asyncLogin = new AsyncLogin ();
+            asyncLogin.delegate = this;
+            asyncLogin.execute(username,password);
 
         }
     }
@@ -61,8 +63,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void processFinish(String output) {
         if(!output.isEmpty())
         {
+            user =  new User(username, password);
+            user.setJsonData(output);
+
             Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("jsonData", output);
+            intent.putExtra("user",user);
             startActivity(intent);
         }
         else

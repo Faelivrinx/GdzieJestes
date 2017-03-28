@@ -5,17 +5,21 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.gdziejestes.R;
+import com.gdziejestes.model.User;
 
 public class MainActivity extends BaseAuthenticationActivity {
-
-    String jsonData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        jsonData = getIntent().getExtras().getString("jsonData");
-        Toast.makeText(this, jsonData, Toast.LENGTH_SHORT).show();
+        if(getIntent().getExtras().getParcelable("user") != null ){
+            User user = getIntent().getExtras().getParcelable("user");
+            Toast.makeText(this, user.getJsonData(), Toast.LENGTH_SHORT).show();
+        }
+
+
+
     }
 }
