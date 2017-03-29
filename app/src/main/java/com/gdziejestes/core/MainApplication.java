@@ -5,11 +5,7 @@ import android.app.Application;
 import com.gdziejestes.common.Authorization;
 import com.gdziejestes.core.dagger.AppComponent;
 import com.gdziejestes.core.dagger.AppModule;
-import com.gdziejestes.core.dagger.BusModule;
 import com.gdziejestes.core.dagger.DaggerAppComponent;
-
-import com.gdziejestes.core.dagger.PersistanceModule;
-import com.squareup.otto.Bus;
 
 /**
  * Created by Dominik on 2017-03-16.
@@ -20,25 +16,19 @@ import com.squareup.otto.Bus;
 public class MainApplication  extends Application {
 
 
-    private static MainApplication app = new MainApplication();
+    private static MainApplication app;
     private AppComponent appComponent;
     private Authorization auth;
-    private Bus bus;
-
-
-    public MainApplication() {
-        getAppComponent();
-        bus = appComponent.getBus();
-    }
 
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        getAppComponent();
         auth = appComponent.getAuth();
-       // auth.login();
-       //auth.login();
+        auth.login();
+        //authorization
        // auth = new Authorization(this);
     }
 
@@ -56,15 +46,8 @@ public class MainApplication  extends Application {
         if(appComponent == null){
             appComponent = DaggerAppComponent.builder()
                     .appModule(new AppModule(this))
-                    .busModule(new BusModule())
-                    .persistanceModule(new PersistanceModule())
                     .build();
         }
         return appComponent;
-    }
-
-
-    public Bus getBus() {
-        return bus;
     }
 }

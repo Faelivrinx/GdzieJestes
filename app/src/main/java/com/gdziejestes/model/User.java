@@ -1,64 +1,93 @@
 package com.gdziejestes.model;
 
+import android.os.AsyncTask;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.gdziejestes.async.AsyncLogin;
+import com.gdziejestes.interfaces.IAsyncLogin;
 
 /**
  * Created by Dominik on 2017-03-16.
  */
 
-public class User {
+public class User implements Parcelable {
 
     //TODO: Stworzyć sensowny model użytkowika
 
-    private String userName;
+    private String name;
     private String email;
-    private String password;
-    private LatLng coordinate;
 
-    public LatLng getCoordinate() {
-        return coordinate;
-    }
+    private String username, password, jsonData = "";
 
-    public void setCoordinate(LatLng coordinate) {
-        this.coordinate = coordinate;
-    }
 
-    private String avatarUrl;
 
     public User() {
     }
 
-    public String getUserName() {
-        return userName;
+    public User(Parcel in)
+    {
+        username = in.readString();
+        password = in.readString();
+        jsonData = in.readString();
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    public User(String name, String email, String password) {
+        this.name = name;
         this.email = email;
+        this.password = password;
+    }
+
+
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
+
+    public String getJsonData() {
+        return jsonData;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(username);
+        dest.writeString(password);
+        dest.writeString(jsonData);
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
     }
-
 }
