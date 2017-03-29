@@ -33,6 +33,11 @@ public class ContactRepository  implements MainActivityContract.repository{
     }
 
     @Override
+    public String getLocationUpdated(String location) {
+        return null;
+    }
+
+    @Override
     public User getContact(String userName) {
         return null;
     }

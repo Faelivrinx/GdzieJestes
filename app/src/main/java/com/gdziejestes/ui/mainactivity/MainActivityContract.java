@@ -13,16 +13,20 @@ public interface MainActivityContract {
     interface Views {
         void showContacts(List<User> users);
         void updateGoogleMap(User user);
+        void showSendRequestToolbarOption();
         void showErrorToast(String error);
     }
 
     interface Actions {
         void loadContacts();
+        void sendRequestToUpdateMap(User user);
+        void receiveResponseToUpdateMap(String response);
         User getUserToUpdateMap(User user);
     }
 
     interface repository {
         List<User> getAllContacts();
+        String getLocationUpdated(String location);
         User getContact(String userName);
     }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.mainactivity.MainActivity"
+    >
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_add_friend"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="200"
+        android:title="@string/friend_list"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/action_user"
+        android:orderInCategory="300"
+        android:title="@string/settings"
+        app:showAsAction="never"/>
+
+</menu>

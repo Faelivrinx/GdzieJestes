@@ -37,7 +37,7 @@ public class MainApplication  extends Application {
         super.onCreate();
 
         auth = appComponent.getAuth();
-      //  auth.login();
+       // auth.login();
        //auth.login();
        // auth = new Authorization(this);
     }

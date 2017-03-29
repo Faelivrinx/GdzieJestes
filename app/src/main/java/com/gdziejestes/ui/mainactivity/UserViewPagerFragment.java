@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gdziejestes.R;
+import com.gdziejestes.core.listener.ViewPagerUserListener;
 import com.gdziejestes.model.User;
 
 import butterknife.BindView;
@@ -21,19 +22,26 @@ import butterknife.ButterKnife;
 //TODO: Avatar implement
 
 
-public class UserViewPagerFragment extends Fragment {
+public class UserViewPagerFragment extends Fragment implements View.OnClickListener {
 
     private static final String USER_USERNAME = "USER_USERNAME";
 
     private String userName;
 
+    ViewPagerUserListener listener;
+
     @BindView(R.id.list_item_contact_displayName)
     TextView displayName;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        listener = (ViewPagerUserListener) getActivity();
+
         userName = getArguments().getString(USER_USERNAME);
+
     }
 
     @Nullable
@@ -42,11 +50,14 @@ public class UserViewPagerFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.list_item_contact, container, false);
         ButterKnife.bind(this, rootView);
 
+        rootView.setOnClickListener(this);
         displayName.setText(userName);
 
 
         return rootView;
     }
+
+
 
     public static UserViewPagerFragment newInstance(User user) {
         Bundle arguments = new Bundle();
@@ -55,5 +66,11 @@ public class UserViewPagerFragment extends Fragment {
         fragment.setArguments(arguments);
 
         return fragment;
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        listener.onUserClicked();
     }
 }

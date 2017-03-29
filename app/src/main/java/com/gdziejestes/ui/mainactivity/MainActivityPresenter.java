@@ -45,6 +45,16 @@ public class MainActivityPresenter implements MainActivityContract.Actions {
     }
 
     @Override
+    public void sendRequestToUpdateMap(User user) {
+
+    }
+
+    @Override
+    public void receiveResponseToUpdateMap(String response) {
+
+    }
+
+    @Override
     public User getUserToUpdateMap(User userName) {
         return null;
     }

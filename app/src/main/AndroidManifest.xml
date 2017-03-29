@@ -38,7 +38,8 @@
         <activity
             android:name=".ui.mainactivity.MainActivity"
             android:screenOrientation="portrait"
-            android:label="Map"/>
+            android:label="Map"
+            android:theme="@style/MainActivity"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
