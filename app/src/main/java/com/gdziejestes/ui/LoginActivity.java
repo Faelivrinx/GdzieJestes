@@ -1,6 +1,7 @@
 package com.gdziejestes.ui;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -83,7 +84,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     }
                 }, 3000);
 
-        bus.post(new Accounts.LoginWithUserNameRequest(email,password));
+        bus.post(new Accounts.LoginWithUserNameRequest(email,password, this));
 
     }
 
@@ -105,20 +106,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void getData(String data) {
 
-        if(data!="")
+        if(!data.equals(""))
         {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("json", data);
             startActivity(intent);
         }
-        else if(data == "Server error")
+       else if(data.equals("Server error"))
         {
-            Toast.makeText(this, "Błąd serwera", Toast.LENGTH_SHORT).show();
+            //showMessage("Błąd serwera");
+            //Toast.makeText(LoginActivity.this, "Błąd serwera", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            Toast.makeText(this, "Błędne dane logowania", Toast.LENGTH_SHORT).show();
+           // showMessage("Błędne dane logowania");
+           // Toast.makeText(context,"Błędne dane logowania", Toast.LENGTH_SHORT).show();
         }
-
     }
+
+    private void showMessage(String message){
+        //Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
 }

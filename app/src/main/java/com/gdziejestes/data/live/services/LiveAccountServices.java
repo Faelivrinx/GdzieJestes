@@ -31,12 +31,12 @@ public class LiveAccountServices extends BaseLiveService   {
     }
 
     @Subscribe
-    public void LoginWithUserName(Accounts.LoginWithUserNameRequest request) throws InterruptedException {
+    public void LoginWithUserName(final Accounts.LoginWithUserNameRequest request) throws InterruptedException {
         final Accounts.LoginWithUserNameResponse response = new Accounts.LoginWithUserNameResponse();
 
         OkHttpClient okHttpClient = new OkHttpClient();
 
-        final ITaskFinished taskFinished = new LoginActivity();
+        final ITaskFinished taskFinished = (ITaskFinished) request.context;
 
         String url = "http://damrod.16mb.com/android/gdzie-jestes/database-login.php";
 
@@ -54,6 +54,8 @@ public class LiveAccountServices extends BaseLiveService   {
                 taskFinished.getData(jsonResponse.body().string());
             }
         });
+
+
     }
 
 

@@ -1,5 +1,7 @@
 package com.gdziejestes.model.entities;
 
+import android.content.Context;
+
 import com.gdziejestes.common.ServiceResponse;
 
 /**
@@ -17,10 +19,12 @@ public class Accounts {
     public static class LoginWithUserNameRequest{
         public String UserName;
         public String Password;
+        public Context context;
 
-        public LoginWithUserNameRequest(String userName, String password) {
+        public LoginWithUserNameRequest(String userName, String password, Context context) {
             UserName = userName;
             Password = password;
+            this.context = context;
         }
     }
 
