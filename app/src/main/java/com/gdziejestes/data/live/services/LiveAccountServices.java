@@ -1,5 +1,8 @@
 package com.gdziejestes.data.live.services;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.gdziejestes.common.Authorization;
 import com.gdziejestes.common.ServiceResponse;
 import com.gdziejestes.core.MainApplication;
@@ -36,7 +39,7 @@ public class LiveAccountServices extends BaseLiveService   {
 
         OkHttpClient okHttpClient = new OkHttpClient();
 
-        final ITaskFinished taskFinished = (ITaskFinished) request.context;
+       // final ITaskFinished taskFinished = (ITaskFinished) request.context;
 
         String url = "http://damrod.16mb.com/android/gdzie-jestes/database-login.php";
 
@@ -46,12 +49,23 @@ public class LiveAccountServices extends BaseLiveService   {
         okHttpClient.newCall(request1).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                taskFinished.getData("Server error");
+                //taskFinished.getData("Server error");
             }
 
             @Override
             public void onResponse(Call call, Response jsonResponse) throws IOException {
-                taskFinished.getData(jsonResponse.body().string());
+                //taskFinished.getData(jsonResponse.body().string());
+                response.json = jsonResponse.body().string();
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(response.json.equals("")){
+                            response.setPropertyError("Error", "Błędne dane");
+                        }
+                        bus.post(response);
+                    }
+                });
+
             }
         });
 

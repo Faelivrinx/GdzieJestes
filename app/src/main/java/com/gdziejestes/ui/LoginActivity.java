@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
@@ -23,7 +25,7 @@ import butterknife.ButterKnife;
  * Created by Dominik on 2017-03-20.
  */
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener, ITaskFinished {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     public static final int LOGIN_REQUEST = 1;
 
@@ -103,6 +105,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         return true;
     }
 
+
+    @Subscribe
+    public void getData(Accounts.LoginWithUserNameResponse response){
+
+        if(response.didSucceed()){
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
+    }
+/*
+
     @Override
     public void getData(String data) {
 
@@ -114,18 +127,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         }
        else if(data.equals("Server error"))
         {
-            //showMessage("Błąd serwera");
+            showMessage("Błąd serwera");
             //Toast.makeText(LoginActivity.this, "Błąd serwera", Toast.LENGTH_SHORT).show();
         }
         else
         {
-           // showMessage("Błędne dane logowania");
-           // Toast.makeText(context,"Błędne dane logowania", Toast.LENGTH_SHORT).show();
+
+            showMessage("Błędne dane logowania");
+
         }
     }
 
-    private void showMessage(String message){
-        //Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    private void showMessage(final String message){
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+*/
 
 }
