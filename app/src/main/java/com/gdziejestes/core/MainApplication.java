@@ -9,6 +9,7 @@ import com.gdziejestes.core.dagger.BusModule;
 import com.gdziejestes.core.dagger.DaggerAppComponent;
 
 import com.gdziejestes.core.dagger.PersistanceModule;
+import com.gdziejestes.data.live.services.Module;
 import com.squareup.otto.Bus;
 
 /**
@@ -37,6 +38,7 @@ public class MainApplication  extends Application {
         super.onCreate();
 
         auth = appComponent.getAuth();
+        Module.register(this);
        // auth.login();
 
     }

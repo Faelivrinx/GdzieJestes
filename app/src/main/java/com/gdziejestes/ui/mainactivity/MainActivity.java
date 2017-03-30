@@ -144,8 +144,8 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
     private void changeViewPagerZoomMap(User user) {
         mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(user.getCoordinate()));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user.getCoordinate(), 15));
+       /* mMap.addMarker(new MarkerOptions().position(user.getCoordinate()));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user.getCoordinate(), 15));*/
     }
 
 

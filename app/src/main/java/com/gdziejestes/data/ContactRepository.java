@@ -20,13 +20,13 @@ public class ContactRepository  implements MainActivityContract.repository{
         List<User> users = new ArrayList<>();
 
         for(int i = 0; i<10; i++){
-            User user = new User();
+           /* User user = new User();
             user.setUserName("User "+i);
             user.setEmail(null);
             user.setPassword(null);
             user.setAvatarUrl(null);
             user.setCoordinate(new LatLng(40.0 + i, 40.0 + i));
-            users.add(user);
+            users.add(user);*/
         }
 
         return users;

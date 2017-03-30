@@ -10,5 +10,6 @@ import com.gdziejestes.data.ContactRepository;
 public class Module {
 
     public static void register(MainApplication application){
+        new LiveAccountServices(application);
     }
 }

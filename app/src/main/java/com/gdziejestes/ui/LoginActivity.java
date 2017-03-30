@@ -80,7 +80,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     }
                 }, 3000);
 
-        bus.post(new Accounts.LoginWithUserNameRequest("",""));
+        bus.post(new Accounts.LoginWithUserNameRequest(email,password));
 
     }
 
