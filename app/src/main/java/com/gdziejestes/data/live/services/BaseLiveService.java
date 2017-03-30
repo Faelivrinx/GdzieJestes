@@ -9,8 +9,8 @@ import com.squareup.otto.Bus;
 
 public class BaseLiveService {
 
-    private final MainApplication application;
-    private Bus bus;
+    protected final MainApplication application;
+    protected Bus bus;
 
     public BaseLiveService(MainApplication application) {
         this.application = application;

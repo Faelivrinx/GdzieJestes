@@ -5,6 +5,7 @@ import com.gdziejestes.common.ServiceResponse;
 import com.gdziejestes.core.MainApplication;
 import com.gdziejestes.model.User;
 import com.gdziejestes.model.entities.Accounts;
+import com.gdziejestes.ui.LoginActivity;
 import com.gdziejestes.util.JsonFormatter;
 import com.squareup.otto.Subscribe;
 
@@ -20,7 +21,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-public class LiveAccountServices extends BaseLiveService {
+public class LiveAccountServices extends BaseLiveService   {
 
     private final Authorization auth;
 
@@ -30,10 +31,12 @@ public class LiveAccountServices extends BaseLiveService {
     }
 
     @Subscribe
-    public void LoginWithUserName(Accounts.LoginWithUserNameRequest request){
-        Accounts.LoginWithUserNameResponse response = new Accounts.LoginWithUserNameResponse();
+    public void LoginWithUserName(Accounts.LoginWithUserNameRequest request) throws InterruptedException {
+        final Accounts.LoginWithUserNameResponse response = new Accounts.LoginWithUserNameResponse();
 
         OkHttpClient okHttpClient = new OkHttpClient();
+
+        final ITaskFinished taskFinished = new LoginActivity();
 
         String url = "http://damrod.16mb.com/android/gdzie-jestes/database-login.php";
 
@@ -43,18 +46,12 @@ public class LiveAccountServices extends BaseLiveService {
         okHttpClient.newCall(request1).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                taskFinished.getData("Server error");
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                String json = response.body().string();
-
-                JsonFormatter jsonFormatter = new JsonFormatter();
-                User user = jsonFormatter.getMainUser(json);
-                List<User> friends = jsonFormatter.getUserFriends(json);
-
+            public void onResponse(Call call, Response jsonResponse) throws IOException {
+                taskFinished.getData(jsonResponse.body().string());
             }
         });
     }

@@ -25,7 +25,7 @@ public class Accounts {
     }
 
     public static class LoginWithUserNameResponse extends ServiceResponse{
-
+        public String json;
     }
 
 

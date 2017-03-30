@@ -68,14 +68,14 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         users = new ArrayList<>();
         currentUser = null;
 
-        viewPager.addOnPageChangeListener(this);
+        //viewPager.addOnPageChangeListener(this);
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.activity_main_map);
         mapFragment.getMapAsync(this);
 
-        changeState(STATE_VIEW);
+        //changeState(STATE_VIEW);
     }
 
     @Override

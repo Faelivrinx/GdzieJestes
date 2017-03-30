@@ -7,10 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.gdziejestes.R;
+import com.gdziejestes.data.live.services.ITaskFinished;
 import com.gdziejestes.model.entities.Accounts;
 import com.gdziejestes.ui.mainactivity.MainActivity;
+import com.squareup.otto.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +22,7 @@ import butterknife.ButterKnife;
  * Created by Dominik on 2017-03-20.
  */
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener, ITaskFinished {
 
     public static final int LOGIN_REQUEST = 1;
 
@@ -97,5 +100,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     public boolean validate(){
         return true;
+    }
+
+    @Override
+    public void getData(String data) {
+
+        if(data!="")
+        {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("json", data);
+            startActivity(intent);
+        }
+        else if(data == "Server error")
+        {
+            Toast.makeText(this, "Błąd serwera", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(this, "Błędne dane logowania", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
