@@ -3,6 +3,7 @@ package com.gdziejestes.data;
 import com.gdziejestes.core.MainApplication;
 import com.gdziejestes.model.User;
 import com.gdziejestes.ui.mainactivity.MainActivityContract;
+import com.gdziejestes.util.JsonFormatter;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -16,18 +17,12 @@ public class ContactRepository  implements MainActivityContract.repository{
 
 
     @Override
-    public List<User> getAllContacts() {
+    public List<User> getAllContacts(String json) {
         List<User> users = new ArrayList<>();
+        JsonFormatter formatter = new JsonFormatter();
 
-        for(int i = 0; i<10; i++){
-           /* User user = new User();
-            user.setUserName("User "+i);
-            user.setEmail(null);
-            user.setPassword(null);
-            user.setAvatarUrl(null);
-            user.setCoordinate(new LatLng(40.0 + i, 40.0 + i));
-            users.add(user);*/
-        }
+        users = formatter.getUserFriends(json);
+
 
         return users;
     }

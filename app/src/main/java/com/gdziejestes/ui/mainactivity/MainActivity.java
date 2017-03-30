@@ -1,5 +1,6 @@
 package com.gdziejestes.ui.mainactivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.gdziejestes.util.Constants.JSON_EXTRAS;
+
 public class MainActivity extends BaseAuthenticationActivity implements OnMapReadyCallback, ViewPager.OnPageChangeListener, MainActivityContract.Views, ViewPagerUserListener {
 
     private static final int STATE_EDITING = 2;
@@ -52,6 +55,8 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     private MainActivityContract.Actions presenter;
     private User currentUser;
     private Toolbar toolbar;
+    private String jsonInformation;
+    private String jsonData;
 
 
     @Override
@@ -59,6 +64,8 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        jsonInformation = getJsonData();
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -68,14 +75,14 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         users = new ArrayList<>();
         currentUser = null;
 
-        //viewPager.addOnPageChangeListener(this);
+        viewPager.addOnPageChangeListener(this);
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.activity_main_map);
         mapFragment.getMapAsync(this);
 
-        //changeState(STATE_VIEW);
+        changeState(STATE_VIEW);
     }
 
     @Override
@@ -87,11 +94,12 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.loadContacts();
+        presenter.loadContacts(jsonInformation);
         notifyAdapterAboutChanged();
     }
 
     private void notifyAdapterAboutChanged() {
+        progressFrame.setVisibility(View.GONE);
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
 
             @Override
@@ -102,7 +110,6 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
                 }
                 return null;
             }
-
             @Override
             public int getCount() {
                 return users.size();
@@ -115,7 +122,6 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         if (users != null && !users.isEmpty()) {
             changeViewPagerZoomMap(users.get(0));
         }
@@ -144,8 +150,8 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
     private void changeViewPagerZoomMap(User user) {
         mMap.clear();
-       /* mMap.addMarker(new MarkerOptions().position(user.getCoordinate()));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user.getCoordinate(), 15));*/
+        mMap.addMarker(new MarkerOptions().position(user.getCoordinate()));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user.getCoordinate(), 12));
     }
 
 
@@ -209,6 +215,13 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         changeState(STATE_EDITING);
     }
 
+    public String getJsonData() {
+        String json = getIntent().getExtras().getString(JSON_EXTRAS);
+        if(json != null && !json.equals("")){
+            return json;
+        }
+        return "";
+    }
 
 
     private class AddRequestActionCallback implements ActionMode.Callback {

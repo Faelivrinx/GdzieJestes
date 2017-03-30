@@ -35,8 +35,8 @@ public class MainActivityPresenter implements MainActivityContract.Actions {
     }
 
     @Override
-    public void loadContacts() {
-        List<User> users = repository.getAllContacts();
+    public void loadContacts(String json) {
+        List<User> users = repository.getAllContacts(json);
         if(users != null && !users.isEmpty()){
             view.showContacts(users);
         } else{

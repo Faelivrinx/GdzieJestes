@@ -61,7 +61,7 @@ public class UserViewPagerFragment extends Fragment implements View.OnClickListe
 
     public static UserViewPagerFragment newInstance(User user) {
         Bundle arguments = new Bundle();
-        //arguments.putString(USER_USERNAME, user.getUserName());
+        arguments.putString(USER_USERNAME, user.getDisplay_name());
         UserViewPagerFragment fragment = new UserViewPagerFragment();
         fragment.setArguments(arguments);
 

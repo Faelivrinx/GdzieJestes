@@ -21,6 +21,8 @@ import com.squareup.otto.Subscribe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.gdziejestes.util.Constants.JSON_EXTRAS;
+
 /**
  * Created by Dominik on 2017-03-20.
  */
@@ -110,7 +112,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void getData(Accounts.LoginWithUserNameResponse response){
 
         if(response.didSucceed()){
-            startActivity(new Intent(this, MainActivity.class));
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(JSON_EXTRAS, response.json);
+            startActivity(intent);
         }
 
     }

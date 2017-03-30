@@ -121,4 +121,8 @@ public class User {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
+    public LatLng getCoordinate(){
+        return new LatLng(Double.parseDouble(this.latitude), Double.parseDouble(this.longitude));
+    }
 }

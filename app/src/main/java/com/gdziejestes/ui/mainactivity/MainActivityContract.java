@@ -18,14 +18,14 @@ public interface MainActivityContract {
     }
 
     interface Actions {
-        void loadContacts();
+        void loadContacts(String json);
         void sendRequestToUpdateMap(User user);
         void receiveResponseToUpdateMap(String response);
         User getUserToUpdateMap(User user);
     }
 
     interface repository {
-        List<User> getAllContacts();
+        List<User> getAllContacts(String json);
         String getLocationUpdated(String location);
         User getContact(String userName);
     }
