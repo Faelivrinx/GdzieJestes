@@ -56,7 +56,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             onLoginFailed();
             return;
 
-            bus.post(new Accounts.LoginWithUserNameRequest("",""));
         }
 
         btnLogin.setEnabled(false);
@@ -80,6 +79,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         progressDialog.dismiss();
                     }
                 }, 3000);
+
+        bus.post(new Accounts.LoginWithUserNameRequest("",""));
 
     }
 
