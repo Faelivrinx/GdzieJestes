@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,20 +10,19 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:paddingTop="56dp">
+        android:paddingRight="24dp">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+
             android:layout_marginTop="8dp">
 
         <EditText
-            android:id="@+id/activity_register_etName"
+            android:id="@+id/activity_register_etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/name"
+            android:hint="@string/username"
             android:inputType="textEmailAddress" />
 
         </android.support.design.widget.TextInputLayout>
@@ -31,7 +30,6 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp">
 
             <EditText
@@ -45,7 +43,6 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp">
             <EditText
                 android:id="@+id/activity_register_EtPassword"
@@ -55,24 +52,46 @@
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.v7.widget.AppCompatButton
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+            <EditText
+                android:id="@+id/activity_register_EtPasswordRepeat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/passwordRepeat"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/activity_register_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/therms_of_use"
+            android:textStyle="italic"
+            android:textSize="10dp"
+            android:checked="false"
+            android:textColor="@color/colorPrimary"/>
+
+        <Button
             android:id="@+id/activity_register_btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="12dp"
             android:layout_marginTop="24dp"
             android:padding="12dp"
             android:text="@string/register" />
+
 
         <TextView
             android:id="@+id/activity_register_tvLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
             android:clickable="true"
             android:gravity="center"
             android:text="@string/already_account"
             android:textSize="16sp" />
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

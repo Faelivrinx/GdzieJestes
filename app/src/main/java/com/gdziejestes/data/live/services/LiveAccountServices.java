@@ -39,11 +39,11 @@ public class LiveAccountServices extends BaseLiveService   {
 
         OkHttpClient okHttpClient = new OkHttpClient();
 
-       // final ITaskFinished taskFinished = (ITaskFinished) request.context;
+        // final ITaskFinished taskFinished = (ITaskFinished) request.context;
 
         String url = "http://damrod.16mb.com/android/gdzie-jestes/database-login.php";
 
-        RequestBody requestBody = new FormBody.Builder().add("username", request.UserName).add("password", request.Password).build();
+        RequestBody requestBody = new FormBody.Builder().add("username", request.username).add("password", request.password).build();
         Request request1 = new Request.Builder().url(url).post(requestBody).build();
 
         okHttpClient.newCall(request1).enqueue(new Callback() {
@@ -59,7 +59,7 @@ public class LiveAccountServices extends BaseLiveService   {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        if(response.json.equals("")){
+                        if (response.json.equals("")) {
                             response.setPropertyError("Error", "Błędne dane");
                         }
                         bus.post(response);
@@ -68,6 +68,40 @@ public class LiveAccountServices extends BaseLiveService   {
 
             }
         });
+    }
+
+        @Subscribe
+        public void RegisterWithUserName(final Accounts.RegisterRequest request) throws InterruptedException {
+            final Accounts.RegisterResponse response = new Accounts.RegisterResponse();
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+
+
+            String url = "http://damrod.16mb.com/android/gdzie-jestes/database-register.php";
+
+            RequestBody requestBody = new FormBody.Builder().add("username", request.username).add("password", request.password).add("firebase_key", request.firebase_key).add("email", request.email).build();
+            Request req = new Request.Builder().url(url).post(requestBody).build();
+
+            okHttpClient.newCall(req).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                }
+
+                @Override
+                public void onResponse(Call call, Response jsonResponse) throws IOException {
+                    response.json = jsonResponse.body().string();
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(response.json.equals("")){
+                                response.setPropertyError("Error", "Brak danych");
+                            }
+                            bus.post(response);
+                        }
+                    });
+
+                }
+            });
 
 
     }
