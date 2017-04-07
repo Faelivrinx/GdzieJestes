@@ -40,7 +40,7 @@ public class MainActivityPresenter implements MainActivityContract.Actions {
         if(users != null && !users.isEmpty()){
             view.showContacts(users);
         } else{
-            view.showErrorToast("Cos nie dziala");
+            view.showErrorToast("Nie mogę pobrać znajomych");
         }
     }
 

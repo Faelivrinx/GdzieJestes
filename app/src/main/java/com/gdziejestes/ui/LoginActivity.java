@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.gdziejestes.R;
 import com.gdziejestes.model.entities.Accounts;
@@ -38,8 +39,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @BindView(R.id.activity_login_btnRegister)
     Button btnRegister;
 
+
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -120,9 +123,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void getData(Accounts.LoginWithUserNameResponse response){
 
         if(response.didSucceed()){
+
+            getMyApp().getAuth().setPreferences(response.json);
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(JSON_EXTRAS, response.json);
             startActivity(intent);
+        } else {
+            Toast.makeText(this, response.getPropertyError("Error"), Toast.LENGTH_SHORT).show();
         }
 
     }

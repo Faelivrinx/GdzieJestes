@@ -10,21 +10,26 @@ import com.gdziejestes.common.Authorization;
  * Created by Dominik on 2017-03-20.
  */
 
-public class BaseAuthenticationActivity extends BaseActivity {
+public abstract class BaseAuthenticationActivity extends BaseActivity {
 
     private Authorization auth;
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         auth = getMyApp().getAuth();
 
         if(!auth.hasAuthToken()){
-            startActivity(new Intent(this, LoginActivity.class));
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
             finish();
+            return;
         }
 
+        onSocialCreate(savedInstanceState);
     }
+
+    protected abstract void onSocialCreate(Bundle savedInstanceState);
 }

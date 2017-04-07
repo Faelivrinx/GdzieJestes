@@ -14,4 +14,5 @@
     <string name="passwordRepeat">Powtórz hasło</string>
     <string name="username">Nazwa użytkownika</string>
     <string name="therms_of_use">Akceptuję regulamin serwisu, którego wcale nie przeczytałem i raczej czytać nie będę ale i tak i tak akceptuję tym samym zgadzając się na przetwarzanie moich danych osobowych, które tu podaje.</string>
+    <string name="logout">wyloguj</string>
 </resources>

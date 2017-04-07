@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "825336434932",
+    "firebase_url": "https://gdziejestes-162611.firebaseio.com",
+    "project_id": "gdziejestes-162611",
+    "storage_bucket": "gdziejestes-162611.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825336434932:android:d6255f86d7caae38",
+        "android_client_info": {
+          "package_name": "com.gdziejestes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825336434932-1qgrrujvig3malru0f5bkhlvkhfr3uk7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gdziejestes",
+            "certificate_hash": "bbd179bcaef0789b92bace5da11b0a59da5d8325"
+          }
+        },
+        {
+          "client_id": "825336434932-v3gcue0f41bbhrorbsas34klbp4457mv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtLeyfl1yNG97VwLomqPuy8MD3A37w5qU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825336434932-v3gcue0f41bbhrorbsas34klbp4457mv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

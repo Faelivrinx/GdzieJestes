@@ -39,7 +39,6 @@ public class MainApplication  extends Application {
 
         auth = appComponent.getAuth();
         Module.register(this);
-       // auth.login();
 
     }
 

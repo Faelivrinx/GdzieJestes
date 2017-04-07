@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.gdziejestes.R;
 import com.gdziejestes.core.MainApplication;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.otto.Bus;
+
+import java.io.IOException;
 
 import butterknife.ButterKnife;
 
@@ -21,7 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         application = (MainApplication) getApplication();

@@ -1,6 +1,7 @@
 package com.gdziejestes.ui.mainactivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,8 +19,10 @@ import android.widget.Toast;
 import com.gdziejestes.R;
 
 import com.gdziejestes.core.listener.ViewPagerUserListener;
+import com.gdziejestes.core.services.DeleteTokenService;
 import com.gdziejestes.model.User;
 import com.gdziejestes.ui.BaseAuthenticationActivity;
+import com.gdziejestes.ui.LoginActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,6 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.gdziejestes.common.Authorization.AUTH_PREFERENCS_JSON_INFORMATION;
 import static com.gdziejestes.util.Constants.JSON_EXTRAS;
 
 public class MainActivity extends BaseAuthenticationActivity implements OnMapReadyCallback, ViewPager.OnPageChangeListener, MainActivityContract.Views, ViewPagerUserListener {
@@ -41,7 +45,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     private int currentState = 1;
     private ActionMode addRequestActionMode;
 
-    GestureDetector tapGestureDetector;
+
 
     private GoogleMap mMap;
     private List<User> users;
@@ -55,17 +59,15 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     private MainActivityContract.Actions presenter;
     private User currentUser;
     private Toolbar toolbar;
+
     private String jsonInformation;
     private String jsonData;
 
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onSocialCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        jsonInformation = getJsonData();
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -83,6 +85,30 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         mapFragment.getMapAsync(this);
 
         changeState(STATE_VIEW);
+        jsonInformation = getJsonData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.action_logout:
+                logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void logout() {
+        getMyApp().getAuth().logout();
+
+        startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -216,11 +242,20 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     }
 
     public String getJsonData() {
-        String json = getIntent().getExtras().getString(JSON_EXTRAS);
+      /*  String json = getIntent().getExtras().getString(JSON_EXTRAS);
         if(json != null && !json.equals("")){
             return json;
+        } else {
+            return getMyApp().getAuth().getPreferences().getString(AUTH_PREFERENCS_JSON_INFORMATION, null);
         }
-        return "";
+        */
+        String jsonPreferences = getMyApp().getAuth().getPreferences().getString(AUTH_PREFERENCS_JSON_INFORMATION, null);
+        if(jsonPreferences != null && !jsonPreferences.isEmpty()){
+            return jsonPreferences;
+        } else{
+            String json = getIntent().getExtras().getString(JSON_EXTRAS);
+            return json;
+        }
     }
 
 
@@ -250,6 +285,5 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
             }
         }
     }
-
 
 }

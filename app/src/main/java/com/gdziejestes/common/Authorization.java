@@ -2,8 +2,8 @@ package com.gdziejestes.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.Preference;
 
-import com.gdziejestes.core.MainApplication;
 import com.gdziejestes.model.User;
 
 /**
@@ -13,31 +13,37 @@ import com.gdziejestes.model.User;
 
 public class Authorization {
 
-    private static final String AUTH_PREFERENCES = "AUTH_PREFERENCES";
-    private static final String AUTH_PREFERENCES_TOKEN = "AUTH_PREFERENCES_TOKEN";
+    public static final String AUTH_PREFERENCES = "AUTH_PREFERENCES";
+
+    public static final String AUTH_PREFERENCS_JSON_INFORMATION = "AUTH_PREFERENCS_JSON_INFORMATION";
+
+    private static final String AUTH_PREFERENCS_FIREBASE_TOKEN = "AUTH_PREFERENCS_FIREBASE_TOKEN";
 
     private final Context context;
     private final SharedPreferences preferences;
 
     private User user;
-    private String authToken;
+    private String jsonInformation;
+    private String firebaseToken;
 
     public Authorization(Context context) {
         this.context = context;
         user = new User();
         this.preferences = context.getSharedPreferences(AUTH_PREFERENCES, Context.MODE_PRIVATE);
-        authToken = preferences.getString(AUTH_PREFERENCES_TOKEN, null);
+        jsonInformation = preferences.getString(AUTH_PREFERENCS_JSON_INFORMATION, null);
+        firebaseToken = preferences.getString(AUTH_PREFERENCS_FIREBASE_TOKEN, null);
     }
 
     public boolean hasAuthToken(){
-        return authToken != null && !authToken.isEmpty();
+        String json = preferences.getString(AUTH_PREFERENCS_JSON_INFORMATION, null);
+
+        return json != null && !json.isEmpty();
     }
 
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
+    public void setPreferences(String jsonInformation) {
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(AUTH_PREFERENCES_TOKEN, authToken);
+        editor.putString(AUTH_PREFERENCS_JSON_INFORMATION, jsonInformation);
         editor.commit();
 
     }
@@ -47,9 +53,18 @@ public class Authorization {
     }
 
     public void login(){
-       // this.user = new User("Dominik", "jurasz.do@gmaiol.com", "Wow");
-        setAuthToken("AUTH");
+        setPreferences("AUTH");
+    }
+
+    public SharedPreferences getPreferences(){
+        return preferences;
     }
 
 
+    public void logout() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
+
+    }
 }

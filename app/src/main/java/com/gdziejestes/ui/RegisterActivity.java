@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.gdziejestes.R;
 import com.gdziejestes.common.DataValidator;
+import com.gdziejestes.core.services.DeleteTokenService;
 import com.gdziejestes.model.entities.Accounts;
 import com.gdziejestes.ui.mainactivity.MainActivity;
 import com.squareup.otto.Subscribe;
@@ -49,12 +50,15 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     CheckBox cbCheckbox;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
         ButterKnife.bind(this);
         btnRegister.setOnClickListener(this);
+
+        Intent intent = new Intent(this, DeleteTokenService.class);
+        startService(intent);
 
     }
 
@@ -116,6 +120,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     Toast.makeText(RegisterActivity.this, response.json, Toast.LENGTH_SHORT).show();
                 }
             });
+            getMyApp().getAuth().setPreferences(response.json);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(JSON_EXTRAS, response.json);
+            startActivity(intent);
         }
 
     }

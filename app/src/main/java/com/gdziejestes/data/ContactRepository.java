@@ -18,13 +18,16 @@ public class ContactRepository  implements MainActivityContract.repository{
 
     @Override
     public List<User> getAllContacts(String json) {
-        List<User> users = new ArrayList<>();
-        JsonFormatter formatter = new JsonFormatter();
+        if(json != null){
+            List<User> users = new ArrayList<>();
+            JsonFormatter formatter = new JsonFormatter();
 
-        users = formatter.getUserFriends(json);
+            users = formatter.getUserFriends(json);
 
+            return users;
+        }
 
-        return users;
+        return null;
     }
 
     @Override
