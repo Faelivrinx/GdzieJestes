@@ -17,7 +17,7 @@ public class Authorization {
 
     public static final String AUTH_PREFERENCS_JSON_INFORMATION = "AUTH_PREFERENCS_JSON_INFORMATION";
 
-    private static final String AUTH_PREFERENCS_FIREBASE_TOKEN = "AUTH_PREFERENCS_FIREBASE_TOKEN";
+    public static final String AUTH_PREFERENCS_FIREBASE_TOKEN = "AUTH_PREFERENCS_FIREBASE_TOKEN";
 
     private final Context context;
     private final SharedPreferences preferences;
@@ -66,5 +66,20 @@ public class Authorization {
         editor.clear();
         editor.commit();
 
+    }
+
+    public void setFirebaseToken(String firebaseToken){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(AUTH_PREFERENCS_FIREBASE_TOKEN, firebaseToken);
+        editor.commit();
+    }
+
+    public String getFirebaseToken(){
+        String token =preferences.getString(AUTH_PREFERENCS_FIREBASE_TOKEN, null);
+        if(token != null && !token.isEmpty()){
+            return token;
+        } else{
+            return "";
+        }
     }
 }

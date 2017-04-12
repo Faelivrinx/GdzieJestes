@@ -3,11 +3,13 @@ package com.gdziejestes.ui.mainactivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -19,7 +21,9 @@ import android.widget.Toast;
 import com.gdziejestes.R;
 
 import com.gdziejestes.core.listener.ViewPagerUserListener;
+import com.gdziejestes.core.services.DeleteToken;
 import com.gdziejestes.core.services.DeleteTokenService;
+import com.gdziejestes.core.services.RefreshToken;
 import com.gdziejestes.model.User;
 import com.gdziejestes.ui.BaseAuthenticationActivity;
 import com.gdziejestes.ui.LoginActivity;
@@ -28,6 +32,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +91,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
         changeState(STATE_VIEW);
         jsonInformation = getJsonData();
+        Log.e(MainActivity.class.getSimpleName(), application.getAuth().getFirebaseToken());
     }
 
     @Override
@@ -101,9 +107,19 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     }
 
     private void logout() {
-        getMyApp().getAuth().logout();
+        //new DeleteToken(application).execute();
+        new RefreshToken(application).execute();
+        final Intent intent = new Intent(this, LoginActivity.class);
+        progressFrame.setVisibility(View.VISIBLE);
 
-        startActivity(new Intent(this, LoginActivity.class));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               application.getAuth().logout();
+                startActivity(intent);
+            }
+        }, 3000);
+        //getMyApp().getAuth().logout();
     }
 
     @Override

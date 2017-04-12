@@ -7,9 +7,12 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.gdziejestes.core.MainApplication;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.IOException;
+
+import static com.gdziejestes.common.Authorization.AUTH_PREFERENCS_FIREBASE_TOKEN;
 
 /**
  * Created by Dominik on 07.04.2017.
@@ -19,8 +22,11 @@ public class DeleteTokenService extends IntentService {
 
     public static final String TAG = DeleteTokenService.class.getSimpleName();
 
+    private MainApplication app;
+
     public DeleteTokenService() {
         super(TAG);
+        app = MainApplication.getApplication();
     }
 
     @Override
@@ -33,14 +39,13 @@ public class DeleteTokenService extends IntentService {
 
             FirebaseInstanceId.getInstance().deleteInstanceId();
 
-            saveTokenToPrefs("");
-
             String tokenCheck = getTokenFromPrefs();
             Log.d(TAG, "Token deleted. Proof: " + tokenCheck);
 
             Log.d(TAG, "Getting new token");
 
-            FirebaseInstanceId.getInstance().getToken();
+            String token =FirebaseInstanceId.getInstance().getToken();
+            saveTokenToPrefs(token);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,17 +54,18 @@ public class DeleteTokenService extends IntentService {
 
     private void saveTokenToPrefs(String _token) {
         // Access Shared Preferences
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
 
         // Save to SharedPreferences
-        editor.putString("registration_id", _token);
+        editor.putString(AUTH_PREFERENCS_FIREBASE_TOKEN, _token);
         editor.apply();
     }
 
 
     public String getTokenFromPrefs() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        return preferences.getString("registration_id", null);
+        return preferences.getString(AUTH_PREFERENCS_FIREBASE_TOKEN, null);
     }
 }

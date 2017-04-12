@@ -103,7 +103,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         }
         if (isCorrect)
         {
-            bus.post(new Accounts.RegisterRequest(username,password, email, firebase_key));
+            bus.post(new Accounts.RegisterRequest(username,password, email));
         }
 
 

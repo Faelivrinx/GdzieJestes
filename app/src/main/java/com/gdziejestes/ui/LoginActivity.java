@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gdziejestes.R;
+import com.gdziejestes.core.services.CreateToken;
+import com.gdziejestes.core.services.RefreshToken;
 import com.gdziejestes.model.entities.Accounts;
 import com.gdziejestes.ui.mainactivity.MainActivity;
 import com.squareup.otto.Subscribe;
@@ -39,6 +41,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @BindView(R.id.activity_login_btnRegister)
     Button btnRegister;
 
+    private ProgressDialog progressDialog;
+
 
 
     @Override
@@ -50,11 +54,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
 
+        if(application.getAuth().getFirebaseToken().equals("")){
+            new RefreshToken(application).execute();
+        }
+
     }
 
     @Override
     public void onClick(View view) {
         if(view == btnLogin){
+
             login();
             //startActivity(new Intent(this, MainActivity.class));
             //startActivityForResult(new Intent(this, AuthorizationActivity.class), LOGIN_REQUEST);
@@ -71,48 +80,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void login() {
-        if(!validate()){
-            onLoginFailed();
-            return;
-
-        }
 
         btnLogin.setEnabled(false);
         etUsername.setEnabled(false);
         etPassword.setEnabled(false);
+        btnRegister.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, android.support.design.R.style.Base_Theme_AppCompat_Light_Dialog_Alert);
+        progressDialog = new ProgressDialog(LoginActivity.this, android.support.design.R.style.Base_Theme_AppCompat_Light_Dialog_Alert);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authentication...");
         progressDialog.show();
 
-        String email = etUsername.getText().toString();
+        String userName = etUsername.getText().toString();
         String password = etPassword.getText().toString();
 
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        onLoginSucces();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
-
-        bus.post(new Accounts.LoginWithUserNameRequest(email,password, this));
+        bus.post(new Accounts.LoginWithUserNameRequest(userName ,password, application.getAuth().getFirebaseToken()));
 
     }
 
-    private void onLoginSucces() {
-        btnLogin.setEnabled(true);
-        etUsername.setEnabled(true);
-        etPassword.setEnabled(true);
-
-    }
-
-    private void onLoginFailed() {
-
-    }
 
     public boolean validate(){
         return true;
@@ -122,6 +108,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Subscribe
     public void getData(Accounts.LoginWithUserNameResponse response){
 
+        progressDialog.dismiss();
+
         if(response.didSucceed()){
 
             getMyApp().getAuth().setPreferences(response.json);
@@ -129,6 +117,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             intent.putExtra(JSON_EXTRAS, response.json);
             startActivity(intent);
         } else {
+            btnLogin.setEnabled(true);
+            etUsername.setEnabled(true);
+            etPassword.setEnabled(true);
+            btnRegister.setEnabled(true);
             Toast.makeText(this, response.getPropertyError("Error"), Toast.LENGTH_SHORT).show();
         }
 

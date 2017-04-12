@@ -21,23 +21,23 @@ public class Accounts {
         public String username, password, email, firebase_key;
         public Context context;
 
-        public LoginWithUserNameRequest(String username, String password, Context context) {
+        public LoginWithUserNameRequest(String username, String password, String firebase_key) {
             this.username = username;
             this.password = password;
-            this.context = context;
+            this.firebase_key = firebase_key;
         }
 
     }
 
     public static class RegisterRequest{
 
-        public String username, password, email, firebase_key;
+        public String username, password, email;
 
-        public RegisterRequest(String username, String password, String email, String firebase_key) {
+        public RegisterRequest(String username, String password, String email) {
             this.username = username;
             this.password = password;
             this.email = email;
-            this.firebase_key = firebase_key;
+
         }
     }
 

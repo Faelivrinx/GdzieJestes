@@ -1,11 +1,14 @@
 package com.gdziejestes.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.gdziejestes.R;
 import com.gdziejestes.core.MainApplication;
+import com.gdziejestes.core.services.CreateToken;
+import com.gdziejestes.core.services.DeleteTokenService;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.otto.Bus;
 
@@ -31,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         bus = application.getBus();
         bus.register(this);
         ButterKnife.setDebug(true);
+
     }
 
     public MainApplication getMyApp() {

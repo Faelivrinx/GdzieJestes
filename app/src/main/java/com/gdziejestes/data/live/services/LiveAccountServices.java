@@ -43,7 +43,14 @@ public class LiveAccountServices extends BaseLiveService   {
 
         String url = "http://damrod.16mb.com/android/gdzie-jestes/database-login.php";
 
-        RequestBody requestBody = new FormBody.Builder().add("username", request.username).add("password", request.password).build();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("username", request.username)
+                .add("password", request.password)
+                .add("firebase_key", request.firebase_key)
+                .add("latitude", "0.0")
+                .add("longitude", "0.0")
+                .build();
+
         Request request1 = new Request.Builder().url(url).post(requestBody).build();
 
         okHttpClient.newCall(request1).enqueue(new Callback() {
@@ -79,7 +86,12 @@ public class LiveAccountServices extends BaseLiveService   {
 
             String url = "http://damrod.16mb.com/android/gdzie-jestes/database-register.php";
 
-            RequestBody requestBody = new FormBody.Builder().add("username", request.username).add("password", request.password).add("firebase_key", request.firebase_key).add("email", request.email).build();
+            RequestBody requestBody = new FormBody.Builder().
+                    add("username", request.username)
+                    .add("password", request.password)
+                    .add("email", request.email)
+                    .build();
+
             Request req = new Request.Builder().url(url).post(requestBody).build();
 
             okHttpClient.newCall(req).enqueue(new Callback() {
