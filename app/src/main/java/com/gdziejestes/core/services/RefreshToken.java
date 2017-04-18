@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.gdziejestes.core.MainApplication;
+import com.gdziejestes.ui.BaseActivity;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.IOException;
@@ -25,10 +26,11 @@ public class RefreshToken extends AsyncTask<Void, String, String>{
         String token = null;
         if(application.getAuth().getFirebaseToken().equals("")){
             token = FirebaseInstanceId.getInstance().getToken();
+
         } else {
             try {
                 FirebaseInstanceId.getInstance().deleteInstanceId();
-                FirebaseInstanceId.getInstance().getToken();
+                //FirebaseInstanceId.getInstance().getToken();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -41,7 +43,11 @@ public class RefreshToken extends AsyncTask<Void, String, String>{
     @Override
     protected void onPostExecute(String token) {
         application.getAuth().setFirebaseToken(token);
-        //application.getAuth().logout();
+
+        if(token.equals("")){
+            application.getAuth().logout();
+        }
+
         Log.e(application.getClass().getSimpleName(), application.getAuth().getFirebaseToken() + " ");
     }
 }

@@ -73,8 +73,6 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -107,19 +105,12 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     }
 
     private void logout() {
-        //new DeleteToken(application).execute();
-        new RefreshToken(application).execute();
-        final Intent intent = new Intent(this, LoginActivity.class);
-        progressFrame.setVisibility(View.VISIBLE);
+        new DeleteToken(application).execute();
+        getMyApp().getAuth().logout();
+        //new RefreshToken(application).execute();
+        Intent intent = new Intent(this, LoginActivity.class);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-               application.getAuth().logout();
-                startActivity(intent);
-            }
-        }, 3000);
-        //getMyApp().getAuth().logout();
+        startActivity(intent);
     }
 
     @Override

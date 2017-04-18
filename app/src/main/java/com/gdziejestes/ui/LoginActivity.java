@@ -3,18 +3,23 @@ package com.gdziejestes.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gdziejestes.R;
 import com.gdziejestes.core.services.CreateToken;
-import com.gdziejestes.core.services.RefreshToken;
 import com.gdziejestes.model.entities.Accounts;
 import com.gdziejestes.ui.mainactivity.MainActivity;
 import com.squareup.otto.Subscribe;
+
+
+import android.os.Handler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,9 +46,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @BindView(R.id.activity_login_btnRegister)
     Button btnRegister;
 
+    @BindView(R.id.activity_login_progressBar)
+    ProgressBar progressBar;
+
+    @BindView(R.id.activity_login_tvKey)
+    TextView tvKey;
+
+    @BindView(R.id.activity_login_clickFrame)
+    View clickFrame;
+
     private ProgressDialog progressDialog;
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,10 +65,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
+        setProgressDialog();
 
         if(application.getAuth().getFirebaseToken().equals("")){
-            new RefreshToken(application).execute();
+            clickFrame.setVisibility(View.VISIBLE);
+        } else {
+            clickFrame.setVisibility(View.GONE);
         }
+
 
     }
 
@@ -68,7 +84,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             //startActivity(new Intent(this, MainActivity.class));
             //startActivityForResult(new Intent(this, AuthorizationActivity.class), LOGIN_REQUEST);
         }
-        if(view == btnRegister)
+         else if(view == btnRegister)
         {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
@@ -86,9 +102,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         etPassword.setEnabled(false);
         btnRegister.setEnabled(false);
 
-        progressDialog = new ProgressDialog(LoginActivity.this, android.support.design.R.style.Base_Theme_AppCompat_Light_Dialog_Alert);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authentication...");
         progressDialog.show();
 
         String userName = etUsername.getText().toString();
@@ -111,7 +124,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         progressDialog.dismiss();
 
         if(response.didSucceed()){
-
             getMyApp().getAuth().setPreferences(response.json);
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(JSON_EXTRAS, response.json);
@@ -124,6 +136,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             Toast.makeText(this, response.getPropertyError("Error"), Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public void onGetKeyClick(View view) {
+        new CreateToken(application).execute();
+        progressBar.setVisibility(View.VISIBLE);
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(getIntent());
+            }
+        });
+
+
+    }
+
+    public void setProgressDialog(){
+        progressDialog = new ProgressDialog(LoginActivity.this, android.support.design.R.style.Base_Theme_AppCompat_Light_Dialog_Alert);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authentication...");
     }
 /*
 
