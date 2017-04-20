@@ -41,6 +41,28 @@ public class Accounts {
         }
     }
 
+    public static class InviteFriend {
+        public String ownUsername, friendUsername;
+
+        public InviteFriend(String ownUsername, String friendUsername) {
+            this.ownUsername = ownUsername;
+            this.friendUsername = friendUsername;
+        }
+    }
+    public static class InviteFriendResponse extends ServiceResponse{
+        public String json;
+    }
+
+    public static class SendNotification{
+        public String username;
+        public String message;
+
+        public SendNotification(String username, String message) {
+            this.username = username;
+            this.message = message;
+        }
+    }
+
     public static class RegisterResponse extends ServiceResponse{
         public String json;
     }

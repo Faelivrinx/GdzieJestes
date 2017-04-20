@@ -118,6 +118,77 @@ public class LiveAccountServices extends BaseLiveService   {
 
     }
 
+    @Subscribe
+    public void sendNotification(final Accounts.SendNotification request){
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+
+        String url = "http://damrod.16mb.com/android/gdzie-jestes/brodcast.php";
+
+        RequestBody requestBody = new FormBody.Builder().
+                add("username", request.username)
+                .add("message", request.message)
+                .build();
+
+        Request req = new Request.Builder().url(url).post(requestBody).build();
+
+        okHttpClient.newCall(req).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response jsonResponse) throws IOException {
+/*                response.json = jsonResponse.body().string();
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(response.json.equals("")){
+                            response.setPropertyError("Error", "Brak danych");
+                        }
+                        bus.post(response);
+                    }
+                });*/
+
+            }
+        });
+    }
+
+    @Subscribe
+    public void InviteFriend(final Accounts.InviteFriend request){
+        final Accounts.InviteFriendResponse response = new Accounts.InviteFriendResponse();
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+
+        String url = "http://damrod.16mb.com/android/gdzie-jestes/database-update.php";
+
+        RequestBody requestBody = new FormBody.Builder().
+                add("username1", request.ownUsername)
+                .add("username2", request.friendUsername)
+                .build();
+
+        Request req = new Request.Builder().url(url).post(requestBody).build();
+
+        okHttpClient.newCall(req).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response jsonResponse) throws IOException {
+               response.json = jsonResponse.body().string();
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bus.post(response);
+                    }
+                });
+
+            }
+        });
+    }
+
 
     private void loginUser(Accounts.ServerResponse response){
 

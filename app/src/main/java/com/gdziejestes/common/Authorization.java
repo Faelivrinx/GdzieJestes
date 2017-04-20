@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.Preference;
 
 import com.gdziejestes.model.User;
+import com.gdziejestes.util.JsonFormatter;
 
 /**
  * Created by Dominik on 2017-03-20.
@@ -22,12 +23,15 @@ public class Authorization {
     private final Context context;
     private final SharedPreferences preferences;
 
+    private JsonFormatter formatter;
+
     private User user;
     private String jsonInformation;
     private String firebaseToken;
 
     public Authorization(Context context) {
         this.context = context;
+        formatter = new JsonFormatter();
         user = new User();
         this.preferences = context.getSharedPreferences(AUTH_PREFERENCES, Context.MODE_PRIVATE);
         jsonInformation = preferences.getString(AUTH_PREFERENCS_JSON_INFORMATION, null);
@@ -49,6 +53,7 @@ public class Authorization {
     }
 
     public User getUser() {
+        user = formatter.getMainUser(jsonInformation);
         return user;
     }
 

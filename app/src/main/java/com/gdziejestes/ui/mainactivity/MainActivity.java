@@ -25,14 +25,18 @@ import com.gdziejestes.core.services.DeleteToken;
 import com.gdziejestes.core.services.DeleteTokenService;
 import com.gdziejestes.core.services.RefreshToken;
 import com.gdziejestes.model.User;
+import com.gdziejestes.model.entities.Accounts;
+import com.gdziejestes.ui.AddFriendActivity;
 import com.gdziejestes.ui.BaseAuthenticationActivity;
 import com.gdziejestes.ui.LoginActivity;
+import com.gdziejestes.util.JsonFormatter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.gdziejestes.common.Authorization.AUTH_PREFERENCS_JSON_INFORMATION;
+import static com.gdziejestes.util.Constants.FRIEND_ADD;
 import static com.gdziejestes.util.Constants.JSON_EXTRAS;
 
 public class MainActivity extends BaseAuthenticationActivity implements OnMapReadyCallback, ViewPager.OnPageChangeListener, MainActivityContract.Views, ViewPagerUserListener {
@@ -63,7 +68,10 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
     private MainActivityContract.Actions presenter;
     private User currentUser;
+    private User mainUser;
     private Toolbar toolbar;
+
+    private JsonFormatter formatter;
 
     private String jsonInformation;
     private String jsonData;
@@ -72,6 +80,9 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     protected void onSocialCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        formatter = new JsonFormatter();
+        getNotificationExtras();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,7 +100,19 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
         changeState(STATE_VIEW);
         jsonInformation = getJsonData();
-        Log.e(MainActivity.class.getSimpleName(), application.getAuth().getFirebaseToken());
+        mainUser = formatter.getMainUser(jsonInformation);
+
+        Toast.makeText(this, mainUser.getUsername(), Toast.LENGTH_SHORT).show();
+        bus.post(new Accounts.LoginWithUserNameRequest(mainUser.getUsername() ,mainUser.getPassword(), application.getAuth().getFirebaseToken()));
+
+        Log.e(MainActivity.class.getSimpleName(), application.getAuth().getPreferences().getString(AUTH_PREFERENCS_JSON_INFORMATION, null));
+    }
+
+    private void getNotificationExtras() {
+/*        if(getIntent().getExtras().getString("anserw") != null && getIntent().getExtras().getString("anserw").equals("yes") ){
+            String information = getIntent().getExtras().getString("anserw");
+            String word = information.substring(0,1);
+        }*/
     }
 
     @Override
@@ -98,6 +121,9 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         switch (item.getItemId()){
             case R.id.action_logout:
                 logout();
+                return true;
+            case R.id.action_addFriend:
+                startActivityForResult(new Intent(this, AddFriendActivity.class), FRIEND_ADD);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -280,7 +306,9 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            //TODO: use presenter to send request
+            if(currentUser != null){
+                bus.post(new Accounts.SendNotification(currentUser.getUsername(), "@"+mainUser.getUsername()+" chce dodać Cię do znajomych!"));
+            }
 
             return false;
         }
@@ -293,4 +321,19 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == FRIEND_ADD){
+            if(resultCode == RESULT_OK){
+                Toast.makeText(this, "Wysłano zaproszenie!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Subscribe
+    public void getUpdatedInformation(Accounts.LoginWithUserNameResponse response){
+        application.getAuth().setPreferences(response.json);
+        presenter.loadContacts(response.json);
+        notifyAdapterAboutChanged();
+    }
 }

@@ -9,4 +9,6 @@ package com.gdziejestes.util;
 public class Constants {
 
     public static final String JSON_EXTRAS = "JSON_EXTRAS";
+
+    public static final int FRIEND_ADD = 1;
 }
