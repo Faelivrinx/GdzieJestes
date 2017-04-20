@@ -37,7 +37,7 @@ public class MainActivityPresenter implements MainActivityContract.Actions {
     @Override
     public void loadContacts(String json) {
         List<User> users = repository.getAllContacts(json);
-        if(users != null && !users.isEmpty()){
+        if(users != null){
             view.showContacts(users);
         } else{
             view.showErrorToast("Nie mogę pobrać znajomych");

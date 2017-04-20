@@ -16,4 +16,5 @@
     <string name="therms_of_use">Akceptuję regulamin serwisu, którego wcale nie przeczytałem i raczej czytać nie będę ale i tak i tak akceptuję tym samym zgadzając się na przetwarzanie moich danych osobowych, które tu podaje.</string>
     <string name="logout">wyloguj</string>
     <string name="dodaj">Dodaj</string>
+    <string name="refresh">odśwież</string>
 </resources>

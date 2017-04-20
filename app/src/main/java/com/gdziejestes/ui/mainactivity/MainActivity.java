@@ -103,8 +103,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         mainUser = formatter.getMainUser(jsonInformation);
 
         Toast.makeText(this, mainUser.getUsername(), Toast.LENGTH_SHORT).show();
-        bus.post(new Accounts.LoginWithUserNameRequest(mainUser.getUsername() ,mainUser.getPassword(), application.getAuth().getFirebaseToken()));
-
+        //    bus.post(new Accounts.LoginWithUserNameRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken()));
         Log.e(MainActivity.class.getSimpleName(), application.getAuth().getPreferences().getString(AUTH_PREFERENCS_JSON_INFORMATION, null));
     }
 
@@ -125,6 +124,10 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
             case R.id.action_addFriend:
                 startActivityForResult(new Intent(this, AddFriendActivity.class), FRIEND_ADD);
                 return true;
+            case R.id.action_refresh:
+                bus.post(new Accounts.LoginWithUserNameRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken()));
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -165,6 +168,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
             public Fragment getItem(int position) {
                 if (users != null && !users.isEmpty()) {
                     User user = users.get(position);
+                    changeViewPagerZoomMap(users.get(position));
                     return UserViewPagerFragment.newInstance(user);
                 }
                 return null;
@@ -216,8 +220,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
     @Override
     public void showContacts(List<User> users) {
-        if(users != null && !users.isEmpty()){
-
+        if(users != null){
             this.users.clear();
             this.users.addAll(users);
             notifyAdapterAboutChanged();
@@ -334,6 +337,6 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     public void getUpdatedInformation(Accounts.LoginWithUserNameResponse response){
         application.getAuth().setPreferences(response.json);
         presenter.loadContacts(response.json);
-        notifyAdapterAboutChanged();
+
     }
 }
