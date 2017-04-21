@@ -68,11 +68,14 @@ public class Accounts {
 
     public static class RefreshRequest {
         public String username, password, email, firebase_key;
+        public String latitude, longitude;
 
-        public RefreshRequest(String username, String password, String firebase_key) {
+        public RefreshRequest(String username, String password, String firebase_key, String latitude, String longitude) {
             this.username = username;
             this.password = password;
             this.firebase_key = firebase_key;
+            this.latitude = latitude;
+            this.longitude = longitude;
         }
 
     }

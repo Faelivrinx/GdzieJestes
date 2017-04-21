@@ -2,11 +2,16 @@ package com.gdziejestes.ui.mainactivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,6 +35,11 @@ import com.gdziejestes.ui.AddFriendActivity;
 import com.gdziejestes.ui.BaseAuthenticationActivity;
 import com.gdziejestes.ui.LoginActivity;
 import com.gdziejestes.util.JsonFormatter;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,16 +58,18 @@ import static com.gdziejestes.common.Authorization.AUTH_PREFERENCS_JSON_INFORMAT
 import static com.gdziejestes.util.Constants.FRIEND_ADD;
 import static com.gdziejestes.util.Constants.JSON_EXTRAS;
 
-public class MainActivity extends BaseAuthenticationActivity implements OnMapReadyCallback, ViewPager.OnPageChangeListener, MainActivityContract.Views, ViewPagerUserListener {
+public class MainActivity extends BaseAuthenticationActivity implements OnMapReadyCallback, ViewPager.OnPageChangeListener, MainActivityContract.Views, ViewPagerUserListener, LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int STATE_EDITING = 2;
     private static final int STATE_VIEW = 1;
     private int currentState = 1;
     private ActionMode addRequestActionMode;
+    private GoogleApiClient googleApiClient;
 
 
-
+    private Location location;
     private GoogleMap mMap;
+    LocationRequest mLocationRequest;
     private List<User> users;
 
     @BindView(R.id.activity_main_viewPager)
@@ -80,6 +92,14 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     protected void onSocialCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        String[] perms = {"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
+
+        int permsRequestCode = 200;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(perms, permsRequestCode);
+        }
 
         formatter = new JsonFormatter();
         getNotificationExtras();
@@ -125,12 +145,22 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
                 startActivityForResult(new Intent(this, AddFriendActivity.class), FRIEND_ADD);
                 return true;
             case R.id.action_refresh:
-                bus.post(new Accounts.RefreshRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken()));
+                bus.post(new Accounts.RefreshRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken(), getLat(), getLng()));
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private String getLat() {
+        double lat = location.getLatitude();
+        return Double.toString(lat);
+    }
+
+    private String getLng() {
+        double lng = location.getLongitude();
+        return Double.toString(lng);
     }
 
     private void logout() {
@@ -179,12 +209,20 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
             }
         });
 
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        googleApiClient.connect();
+
+
         if (users != null && !users.isEmpty()) {
             changeViewPagerZoomMap(users.get(0));
         }
@@ -298,6 +336,41 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
             String json = getIntent().getExtras().getString(JSON_EXTRAS);
             return json;
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        this.location = location;
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        mLocationRequest= LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(10000);
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
 

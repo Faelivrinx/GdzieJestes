@@ -90,8 +90,8 @@ public class LiveAccountServices extends BaseLiveService   {
                 .add("username", request.username)
                 .add("password", request.password)
                 .add("firebase_key", request.firebase_key)
-                .add("latitude", "0.0")
-                .add("longitude", "0.0")
+                .add("latitude", request.latitude)
+                .add("longitude", request.longitude)
                 .build();
 
         Request request1 = new Request.Builder().url(url).post(requestBody).build();
