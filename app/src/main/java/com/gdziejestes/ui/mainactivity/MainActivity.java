@@ -103,7 +103,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         mainUser = formatter.getMainUser(jsonInformation);
 
         Toast.makeText(this, mainUser.getUsername(), Toast.LENGTH_SHORT).show();
-        //    bus.post(new Accounts.LoginWithUserNameRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken()));
+        //bus.post(new Accounts.LoginWithUserNameRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken()));
         Log.e(MainActivity.class.getSimpleName(), application.getAuth().getPreferences().getString(AUTH_PREFERENCS_JSON_INFORMATION, null));
     }
 
@@ -125,7 +125,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
                 startActivityForResult(new Intent(this, AddFriendActivity.class), FRIEND_ADD);
                 return true;
             case R.id.action_refresh:
-                bus.post(new Accounts.LoginWithUserNameRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken()));
+                bus.post(new Accounts.RefreshRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken()));
                 return true;
 
             default:
@@ -202,8 +202,14 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
             User user = users.get(position);
             currentUser = user;
             changeViewPagerZoomMap(user);
+        } else{
+            clearMap();
         }
 
+    }
+
+    private void clearMap() {
+        mMap.clear();
     }
 
     @Override
@@ -334,9 +340,9 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     }
 
     @Subscribe
-    public void getUpdatedInformation(Accounts.LoginWithUserNameResponse response){
+    public void getUpdatedInformation(Accounts.RefreshResponse response){
         application.getAuth().setPreferences(response.json);
         presenter.loadContacts(response.json);
-
     }
+
 }

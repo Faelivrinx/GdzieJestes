@@ -125,6 +125,7 @@ public class NotificationReceiverActivity extends BaseAuthenticationActivity {
     @Subscribe
     public void onDataResponse(Accounts.InviteFriendResponse response){
         Toast.makeText(this, response.json, Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(this, MainActivity.class));
-    }
+        finish();
+        //startActivity(new Intent(this, MainActivity.class));
+}
 }

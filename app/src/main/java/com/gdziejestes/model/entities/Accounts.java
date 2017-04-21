@@ -11,13 +11,14 @@ import com.gdziejestes.ui.RegisterActivity;
 
 public class Accounts {
 
-    private Accounts(){}
+    private Accounts() {
+    }
 
-    public static class ServerResponse{
+    public static class ServerResponse {
         public String jsonInformation;
     }
 
-    public static class LoginWithUserNameRequest{
+    public static class LoginWithUserNameRequest {
         public String username, password, email, firebase_key;
         public Context context;
 
@@ -29,7 +30,8 @@ public class Accounts {
 
     }
 
-    public static class RegisterRequest{
+
+    public static class RegisterRequest {
 
         public String username, password, email;
 
@@ -49,11 +51,12 @@ public class Accounts {
             this.friendUsername = friendUsername;
         }
     }
-    public static class InviteFriendResponse extends ServiceResponse{
+
+    public static class InviteFriendResponse extends ServiceResponse {
         public String json;
     }
 
-    public static class SendNotification{
+    public static class SendNotification {
         public String username;
         public String message;
 
@@ -63,13 +66,29 @@ public class Accounts {
         }
     }
 
-    public static class RegisterResponse extends ServiceResponse{
+    public static class RefreshRequest {
+        public String username, password, email, firebase_key;
+
+        public RefreshRequest(String username, String password, String firebase_key) {
+            this.username = username;
+            this.password = password;
+            this.firebase_key = firebase_key;
+        }
+
+    }
+
+    public static class RefreshResponse extends ServiceResponse {
         public String json;
     }
 
-    public static class LoginWithUserNameResponse extends ServiceResponse{
+    public static class RegisterResponse extends ServiceResponse {
         public String json;
     }
 
+    public static class LoginWithUserNameResponse extends ServiceResponse {
+        public String json;
+
+
+    }
 
 }

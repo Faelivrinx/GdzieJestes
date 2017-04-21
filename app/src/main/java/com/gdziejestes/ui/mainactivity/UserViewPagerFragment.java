@@ -38,10 +38,6 @@ public class UserViewPagerFragment extends Fragment implements View.OnClickListe
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        listener = (ViewPagerUserListener) getActivity();
-
-        userName = getArguments().getString(USER_USERNAME);
-
     }
 
     @Nullable
@@ -49,6 +45,10 @@ public class UserViewPagerFragment extends Fragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.list_item_contact, container, false);
         ButterKnife.bind(this, rootView);
+
+        listener = (ViewPagerUserListener) getActivity();
+
+        userName = getArguments().getString(USER_USERNAME);
 
         rootView.setOnClickListener(this);
         displayName.setText(userName);

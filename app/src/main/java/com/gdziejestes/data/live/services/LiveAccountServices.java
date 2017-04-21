@@ -76,6 +76,49 @@ public class LiveAccountServices extends BaseLiveService   {
             }
         });
     }
+    @Subscribe
+    public void RefreshRequest(final Accounts.RefreshRequest request) throws InterruptedException {
+        final Accounts.RefreshResponse response = new Accounts.RefreshResponse();
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+        // final ITaskFinished taskFinished = (ITaskFinished) request.context;
+
+        String url = "http://damrod.16mb.com/android/gdzie-jestes/database-login.php";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("username", request.username)
+                .add("password", request.password)
+                .add("firebase_key", request.firebase_key)
+                .add("latitude", "0.0")
+                .add("longitude", "0.0")
+                .build();
+
+        Request request1 = new Request.Builder().url(url).post(requestBody).build();
+
+        okHttpClient.newCall(request1).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //taskFinished.getData("Server error");
+            }
+
+            @Override
+            public void onResponse(Call call, Response jsonResponse) throws IOException {
+                //taskFinished.getData(jsonResponse.body().string());
+                response.json = jsonResponse.body().string();
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (response.json.equals("")) {
+                            response.setPropertyError("Error", "Błędne dane");
+                        }
+                        bus.post(response);
+                    }
+                });
+
+            }
+        });
+    }
 
         @Subscribe
         public void RegisterWithUserName(final Accounts.RegisterRequest request) throws InterruptedException {

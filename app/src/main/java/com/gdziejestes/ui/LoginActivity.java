@@ -72,8 +72,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         } else {
             clickFrame.setVisibility(View.GONE);
         }
-
-
     }
 
     @Override
@@ -142,12 +140,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         new CreateToken(application).execute();
         progressBar.setVisibility(View.VISIBLE);
 
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(getIntent());
-            }
-        });
+        if(!application.getAuth().getFirebaseToken().equals("")){
+            clickFrame.setVisibility(View.GONE);
+        }
 
 
     }
