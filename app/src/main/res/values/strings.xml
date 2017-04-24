@@ -17,4 +17,6 @@
     <string name="logout">wyloguj</string>
     <string name="dodaj">Dodaj</string>
     <string name="refresh">odśwież</string>
+    <string name="logowanie">Logowanie:</string>
+    <string name="rejstracja">Rejstracja:</string>
 </resources>

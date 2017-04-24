@@ -34,6 +34,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.activity_register_btnRegister)
     Button btnRegister;
 
+    @BindView(R.id.activity_register_btnLogin)
+    Button btnLogin;
+
     @BindView(R.id.activity_register_etUsername)
     EditText etUsername;
 
@@ -56,6 +59,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         ButterKnife.bind(this);
         btnRegister.setOnClickListener(this);
+        btnLogin.setOnClickListener(this);
 
         Intent intent = new Intent(this, DeleteTokenService.class);
         startService(intent);
@@ -67,6 +71,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         if(view == btnRegister)
         {
             register();
+        }
+        if(view == btnLogin)
+        {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -120,10 +129,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     Toast.makeText(RegisterActivity.this, response.json, Toast.LENGTH_SHORT).show();
                 }
             });
-            getMyApp().getAuth().setPreferences(response.json);
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(JSON_EXTRAS, response.json);
-            startActivity(intent);
+            if(response.json.equals("registration succesfull"))
+            {
+                //getMyApp().getAuth().setPreferences(response.json);
+                Intent intent = new Intent(this, LoginActivity.class);
+                //intent.putExtra(JSON_EXTRAS, response.json);
+                startActivity(intent);
+            }
+
         }
 
     }

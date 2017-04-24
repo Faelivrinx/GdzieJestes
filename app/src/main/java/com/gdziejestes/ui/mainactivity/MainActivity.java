@@ -123,7 +123,6 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         mainUser = formatter.getMainUser(jsonInformation);
 
         Toast.makeText(this, mainUser.getUsername(), Toast.LENGTH_SHORT).show();
-        //bus.post(new Accounts.LoginWithUserNameRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken()));
         Log.e(MainActivity.class.getSimpleName(), application.getAuth().getPreferences().getString(AUTH_PREFERENCS_JSON_INFORMATION, null));
     }
 
