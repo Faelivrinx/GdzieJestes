@@ -34,6 +34,8 @@ import com.gdziejestes.model.entities.Accounts;
 import com.gdziejestes.ui.AddFriendActivity;
 import com.gdziejestes.ui.BaseAuthenticationActivity;
 import com.gdziejestes.ui.LoginActivity;
+import com.gdziejestes.ui.SettingsActivity;
+import com.gdziejestes.ui.SettingsAuthActivity;
 import com.gdziejestes.util.JsonFormatter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -146,6 +148,11 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
             case R.id.action_refresh:
                 bus.post(new Accounts.RefreshRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken(), getLat(), getLng()));
                 return true;
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsAuthActivity.class);
+                intent.putExtra("mainUserPassword", mainUser.getPassword());
+                startActivity(intent);
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -167,8 +174,8 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         getMyApp().getAuth().logout();
         //new RefreshToken(application).execute();
         Intent intent = new Intent(this, LoginActivity.class);
-
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -257,7 +264,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     private void changeViewPagerZoomMap(User user) {
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(user.getCoordinate()));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user.getCoordinate(), 12));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user.getCoordinate(), 15));
     }
 
 

@@ -19,4 +19,13 @@
     <string name="refresh">odśwież</string>
     <string name="logowanie">Logowanie:</string>
     <string name="rejstracja">Rejstracja:</string>
+    <string name="update_data">zachowaj zmiany</string>
+    <string name="register2">Rejstracja użytkownika</string>
+    <string name="change_password">nowe hasło</string>
+    <string name="password_old">Stare hasło</string>
+    <string name="password_new">Nowe hasło</string>
+    <string name="password_new_repeat">Powtórz nowe hasło</string>
+    <string name="password_check">Przejdź do zmiany ustawień</string>
+    <string name="email_new">Nowy email</string>
+    <string name="displayName">Wyświetlany pesudonim</string>
 </resources>

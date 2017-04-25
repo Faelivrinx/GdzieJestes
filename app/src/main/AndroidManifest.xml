@@ -5,7 +5,7 @@
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
+         location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -31,31 +31,28 @@
             android:theme="@style/MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.LoginActivity"
-            android:screenOrientation="portrait"
-            android:label="Map" />
-
-        <activity android:name=".ui.NotificationReceiverActivity"/>
-
-        <activity android:name=".ui.AddFriendActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".ui.RegisterActivity"
+            android:label="Map"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.NotificationReceiverActivity" />
+        <activity
+            android:name=".ui.AddFriendActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.RegisterActivity"
             android:screenOrientation="portrait" />
 
-        <service
-            android:name=".core.services.FirebaseMessagingService">
+        <service android:name=".core.services.FirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <service android:name=".core.services.DeleteTokenService"/>
+        <service android:name=".core.services.DeleteTokenService" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -63,12 +60,14 @@
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".ui.SettingsActivity" />
+        <activity android:name=".ui.SettingsAuthActivity"></activity>
     </application>
 
 </manifest>

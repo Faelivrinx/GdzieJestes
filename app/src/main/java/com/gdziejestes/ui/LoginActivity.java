@@ -105,9 +105,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String userName = etUsername.getText().toString();
         String password = etPassword.getText().toString();
 
-
         bus.post(new Accounts.LoginWithUserNameRequest(userName ,password, application.getAuth().getFirebaseToken()));
-
     }
 
 
@@ -126,6 +124,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(JSON_EXTRAS, response.json);
             startActivity(intent);
+            finish();
+
         } else {
             btnLogin.setEnabled(true);
             etUsername.setEnabled(true);
