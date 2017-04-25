@@ -25,10 +25,18 @@ import butterknife.ButterKnife;
 public class UserViewPagerFragment extends Fragment implements View.OnClickListener {
 
     private static final String USER_USERNAME = "USER_USERNAME";
+    private static final String USER_DATE = "USER_DATE";
 
     private String userName;
+    private String[] userDate;
 
     ViewPagerUserListener listener;
+
+    @BindView(R.id.list_item_contact_date)
+    TextView date;
+
+    @BindView(R.id.list_item_contact_time)
+    TextView time;
 
     @BindView(R.id.list_item_contact_displayName)
     TextView displayName;
@@ -49,6 +57,11 @@ public class UserViewPagerFragment extends Fragment implements View.OnClickListe
         listener = (ViewPagerUserListener) getActivity();
 
         userName = getArguments().getString(USER_USERNAME);
+        userDate = getArguments().getString(USER_DATE).split(" ");
+
+        date.setText(userDate[0]);
+        time.setText(userDate[1]);
+
 
         rootView.setOnClickListener(this);
         displayName.setText(userName);
@@ -62,6 +75,7 @@ public class UserViewPagerFragment extends Fragment implements View.OnClickListe
     public static UserViewPagerFragment newInstance(User user) {
         Bundle arguments = new Bundle();
         arguments.putString(USER_USERNAME, user.getDisplay_name());
+        arguments.putString(USER_DATE, user.getDate());
         UserViewPagerFragment fragment = new UserViewPagerFragment();
         fragment.setArguments(arguments);
 

@@ -29,7 +29,11 @@ public class Accounts {
         }
 
     }
+    public static class LoginWithUserNameResponse extends ServiceResponse {
+        public String json;
 
+
+    }
 
     public static class RegisterRequest {
 
@@ -42,6 +46,9 @@ public class Accounts {
 
         }
     }
+    public static class RegisterResponse extends ServiceResponse {
+        public String json;
+    }
 
     public static class InviteFriend {
         public String ownUsername, friendUsername;
@@ -51,7 +58,6 @@ public class Accounts {
             this.friendUsername = friendUsername;
         }
     }
-
     public static class InviteFriendResponse extends ServiceResponse {
         public String json;
     }
@@ -79,19 +85,35 @@ public class Accounts {
         }
 
     }
-
     public static class RefreshResponse extends ServiceResponse {
         public String json;
     }
 
-    public static class RegisterResponse extends ServiceResponse {
+    public static class UpdateDataRequest {
+
+        public String username, password, email, displayName;
+
+        public UpdateDataRequest(String username, String password, String email, String displayName) {
+            this.username = username;
+            this.password = password;
+            this.email = email;
+            this.displayName = displayName;
+        }
+    }
+    public static class UpdateDataResponse extends ServiceResponse {
         public String json;
     }
 
-    public static class LoginWithUserNameResponse extends ServiceResponse {
-        public String json;
-
-
+    public static class DeleteFriendRequest {
+        public String ownUsername, friendUsername;
+        public DeleteFriendRequest(String ownUsername, String friendUsername) {
+            this.ownUsername = ownUsername;
+            this.friendUsername = friendUsername;
+        }
     }
+    public static class DeleteFriendResponse extends ServiceResponse {
+        public String json;
+    }
+
 
 }

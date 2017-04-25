@@ -230,6 +230,80 @@ public class LiveAccountServices extends BaseLiveService   {
         });
     }
 
+    @Subscribe
+    public void UpdateDataRequest(final Accounts.UpdateDataRequest request) throws InterruptedException {
+        final Accounts.UpdateDataResponse response = new Accounts.UpdateDataResponse();
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+
+        String url = "http://damrod.16mb.com/android/gdzie-jestes/database-register.php";
+
+        RequestBody requestBody = new FormBody.Builder().
+                add("username", "username_test")
+                .add("password", "test1234")
+                .add("email", "małpa@op.pl")
+                .build();
+
+        Request req = new Request.Builder().url(url).post(requestBody).build();
+
+        okHttpClient.newCall(req).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response jsonResponse) throws IOException {
+                response.json = jsonResponse.body().string();
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(response.json.equals("")){
+                            response.setPropertyError("Error", "Brak danych");
+                        }
+                        bus.post(response);
+                    }
+                });
+
+            }
+        });
+    }
+
+
+    @Subscribe
+    public void DeleteFriendRequest(final Accounts.DeleteFriendRequest request){
+        final Accounts.DeleteFriendResponse response = new Accounts.DeleteFriendResponse();
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+        String url = "http://damrod.16mb.com/android/gdzie-jestes/database-update.php";
+
+        RequestBody requestBody = new FormBody.Builder().
+                add("username1", request.ownUsername)
+                .add("username2", request.friendUsername)
+                .add("mode", "remove")
+                .build();
+
+        Request req = new Request.Builder().url(url).post(requestBody).build();
+
+        okHttpClient.newCall(req).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response jsonResponse) throws IOException {
+                response.json = jsonResponse.body().string();
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bus.post(response);
+                    }
+                });
+
+            }
+        });
+    }
 
     private void loginUser(Accounts.ServerResponse response){
 
@@ -237,4 +311,6 @@ public class LiveAccountServices extends BaseLiveService   {
 
         }
     }
+
+
 }

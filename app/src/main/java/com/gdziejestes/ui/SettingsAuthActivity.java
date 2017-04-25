@@ -34,7 +34,7 @@ public class SettingsAuthActivity extends AppCompatActivity {
         btnCheckPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(passwordEt.getText().equals(mainUserPassword))
+                if(passwordEt.getText().toString().equals(mainUserPassword))
                 {
                     startActivity (new Intent(SettingsAuthActivity.this, SettingsActivity.class));
                     finish();

@@ -68,7 +68,6 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     private ActionMode addRequestActionMode;
     private GoogleApiClient googleApiClient;
 
-
     private Location location;
     private GoogleMap mMap;
     LocationRequest mLocationRequest;
@@ -114,7 +113,6 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         currentUser = null;
 
         viewPager.addOnPageChangeListener(this);
-
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.activity_main_map);
@@ -204,7 +202,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
             public Fragment getItem(int position) {
                 if (users != null && !users.isEmpty()) {
                     User user = users.get(position);
-                    changeViewPagerZoomMap(users.get(position));
+                   // changeViewPagerZoomMap(users.get(position));
                     return UserViewPagerFragment.newInstance(user);
                 }
                 return null;
@@ -384,6 +382,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
             getMenuInflater().inflate(R.menu.activity_menu_contact_request, menu);
+
             return true;
         }
 
@@ -394,8 +393,9 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            if(currentUser != null){
-                bus.post(new Accounts.SendNotification(currentUser.getUsername(), "@"+mainUser.getUsername()+" chce dodać Cię do znajomych!"));
+            if(menuItem.getItemId() == R.id.activity_menu_contact_request_accept){
+               // bus.post(new Accounts.SendNotification(currentUser.getUsername(), "@"+mainUser.getUsername()+" chce dodać Cię do znajomych!"));
+                bus.post(new Accounts.DeleteFriendRequest(mainUser.getUsername(), currentUser.getUsername()));
             }
 
             return false;
@@ -422,6 +422,12 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     public void getUpdatedInformation(Accounts.RefreshResponse response){
         application.getAuth().setPreferences(response.json);
         presenter.loadContacts(response.json);
+    }
+    
+    @Subscribe
+    public void getDeletedUserInfo(Accounts.DeleteFriendResponse response)
+    {
+        Toast.makeText(this, response.json, Toast.LENGTH_SHORT).show();
     }
 
 }
