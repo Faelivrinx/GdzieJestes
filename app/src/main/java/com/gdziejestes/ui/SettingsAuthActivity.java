@@ -21,7 +21,7 @@ public class SettingsAuthActivity extends AppCompatActivity {
     @BindView(R.id.activity_settings_auth_EtPassword)
     EditText passwordEt;
 
-    private String mainUserPassword;
+    private String mainUserUsername, mainUserPassword, mainUserEmail, mainUserDisplayName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +29,22 @@ public class SettingsAuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings_auth);
         ButterKnife.bind(this);
 
+        mainUserUsername = getIntent().getStringExtra("mainUserUsername");
         mainUserPassword = getIntent().getStringExtra("mainUserPassword");
+        mainUserEmail = getIntent().getStringExtra("mainUserEmail");
+        mainUserDisplayName = getIntent().getStringExtra("mainUserDisplayName");
 
         btnCheckPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(passwordEt.getText().toString().equals(mainUserPassword))
                 {
-                    startActivity (new Intent(SettingsAuthActivity.this, SettingsActivity.class));
+                    Intent intent = new Intent(SettingsAuthActivity.this, SettingsActivity.class);
+                    intent.putExtra("mainUserUsername", mainUserUsername);
+                    intent.putExtra("mainUserPassword", mainUserPassword);
+                    intent.putExtra("mainUserEmail", mainUserEmail);
+                    intent.putExtra("mainUserDisplayName", mainUserDisplayName);
+                    startActivity (intent);
                     finish();
                 }
                 else

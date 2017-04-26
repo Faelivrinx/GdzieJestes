@@ -16,9 +16,23 @@ public class DataValidator {
         this.firebase_key = firebase_key;
     }
 
+    public DataValidator(String password, String passwordRepeat, String email)
+    {
+        this.password = password;
+        this.passwordRepeat = passwordRepeat;
+        this.email = email;
+    }
+
     public boolean checkPassword()
     {
         if(password.equals(passwordRepeat) && password.length() >= 6)
+            return true;
+        return false;
+    }
+
+    public boolean checkPassword2()
+    {
+        if(password.equals(passwordRepeat))
             return true;
         return false;
     }

@@ -237,12 +237,13 @@ public class LiveAccountServices extends BaseLiveService   {
         OkHttpClient okHttpClient = new OkHttpClient();
 
 
-        String url = "http://damrod.16mb.com/android/gdzie-jestes/database-register.php";
+        String url = "http://damrod.16mb.com/android/gdzie-jestes/database-update-settings.php";
 
         RequestBody requestBody = new FormBody.Builder().
-                add("username", "username_test")
-                .add("password", "test1234")
-                .add("email", "małpa@op.pl")
+                add("username", request.username)
+                .add("password", request.password)
+                .add("email", request.email)
+                .add("display_name", request.displayName)
                 .build();
 
         Request req = new Request.Builder().url(url).post(requestBody).build();

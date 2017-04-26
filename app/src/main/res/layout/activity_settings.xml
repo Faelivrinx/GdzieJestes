@@ -67,11 +67,11 @@
             android:layout_marginTop="8dp">
 
             <EditText
-                android:id="@+id/activity_settings_etUsername"
+                android:id="@+id/activity_settings_etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password_new"
-                android:inputType="textEmailAddress" />
+                android:inputType="textPassword"/>
         </android.support.design.widget.TextInputLayout>
 
 
@@ -91,13 +91,13 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="24dp">
 
             <EditText
                 android:id="@+id/activity_settings_etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email_new"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
 
@@ -127,13 +127,16 @@
         android:padding="12dp">
 
         <Button
+
             android:id="@+id/activity_settings_btnSaveChanges"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/secondary_text"
             android:text="@string/update_data"
             android:textColor="@color/icons"
-            android:textStyle="bold" />
+            android:textStyle="bold" >
+            <requestFocus />
+            </Button>
 
 
     </LinearLayout>

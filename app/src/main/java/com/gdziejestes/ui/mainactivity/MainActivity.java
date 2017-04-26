@@ -89,10 +89,14 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     private String jsonInformation;
     private String jsonData;
 
+    private Intent intent;
+
     @Override
     protected void onSocialCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        intent=getIntent();
 
         String[] perms = {"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
 
@@ -124,6 +128,8 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
         Toast.makeText(this, mainUser.getUsername(), Toast.LENGTH_SHORT).show();
         Log.e(MainActivity.class.getSimpleName(), application.getAuth().getPreferences().getString(AUTH_PREFERENCS_JSON_INFORMATION, null));
+
+
     }
 
     private void getNotificationExtras() {
@@ -148,7 +154,10 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
                 return true;
             case R.id.action_settings:
                 Intent intent = new Intent(this, SettingsAuthActivity.class);
+                intent.putExtra("mainUserUsername", mainUser.getUsername());
                 intent.putExtra("mainUserPassword", mainUser.getPassword());
+                intent.putExtra("mainUserEmail", mainUser.getEmail());
+                intent.putExtra("mainUserDisplayName", mainUser.getDisplay_name());
                 startActivity(intent);
                 return true;
 
@@ -192,6 +201,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         super.onResume();
         presenter.loadContacts(jsonInformation);
         notifyAdapterAboutChanged();
+        currentUser = users.get(0);
     }
 
     private void notifyAdapterAboutChanged() {
@@ -388,6 +398,7 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            actionMode.setTitle("Usunąć: "+currentUser.getDisplay_name()+"?");
             return false;
         }
 
@@ -421,7 +432,9 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
     @Subscribe
     public void getUpdatedInformation(Accounts.RefreshResponse response){
         application.getAuth().setPreferences(response.json);
-        presenter.loadContacts(response.json);
+        finish();
+        startActivity(intent);
+
     }
     
     @Subscribe
