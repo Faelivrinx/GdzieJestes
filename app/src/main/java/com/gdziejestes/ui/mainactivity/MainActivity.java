@@ -150,7 +150,13 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
                 startActivityForResult(new Intent(this, AddFriendActivity.class), FRIEND_ADD);
                 return true;
             case R.id.action_refresh:
-                bus.post(new Accounts.RefreshRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken(), getLat(), getLng()));
+                try {
+                    bus.post(new Accounts.RefreshRequest(mainUser.getUsername(), mainUser.getPassword(), application.getAuth().getFirebaseToken(), getLat(), getLng()));
+                }
+                catch(Exception e)
+            {
+                Toast.makeText(this, "Aby odświeżyć musisz włączyć GPS", Toast.LENGTH_SHORT).show();
+            }
                 return true;
             case R.id.action_settings:
                 Intent intent = new Intent(this, SettingsAuthActivity.class);
