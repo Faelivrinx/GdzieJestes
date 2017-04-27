@@ -6,10 +6,11 @@
     >
 
     <item
+        android:icon="@mipmap/ic_refresh_black"
         android:id="@+id/action_refresh"
         android:orderInCategory="300"
         android:title="@string/refresh"
-        app:showAsAction="never"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_addFriend"
@@ -26,8 +27,5 @@
         android:orderInCategory="300"
         android:title="@string/logout"
         app:showAsAction="never"/>
-
-
-
 
 </menu>

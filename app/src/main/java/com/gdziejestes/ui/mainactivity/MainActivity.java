@@ -1,5 +1,6 @@
 package com.gdziejestes.ui.mainactivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
@@ -100,10 +102,10 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
         String[] perms = {"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
 
-        int permsRequestCode = 200;
+        int permsRequestCode = 1;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(perms, permsRequestCode);
+        if(!hasPermissions(this, perms)){
+            ActivityCompat.requestPermissions(this, perms, permsRequestCode);
         }
 
         formatter = new JsonFormatter();
@@ -139,7 +141,6 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()){
             case R.id.action_logout:
                 logout();
@@ -292,7 +293,6 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
             progressFrame.setVisibility(View.GONE);
 
         }
-
     }
 
     @Override
@@ -364,6 +364,17 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         this.location = location;
     }
 
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         mLocationRequest= LocationRequest.create();
@@ -371,13 +382,6 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         mLocationRequest.setInterval(10000);
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
 
