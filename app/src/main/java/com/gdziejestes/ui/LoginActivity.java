@@ -91,6 +91,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void openRegisterActivity() {
         startActivity(new Intent(this, RegisterActivity.class));
+        finish();
     }
 
     private void login() {
@@ -104,6 +105,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         String userName = etUsername.getText().toString();
         String password = etPassword.getText().toString();
+        String token = application.getAuth().getFirebaseToken();
+
 
         bus.post(new Accounts.LoginWithUserNameRequest(userName ,password, application.getAuth().getFirebaseToken()));
     }

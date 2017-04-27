@@ -128,8 +128,6 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
 
         Toast.makeText(this, mainUser.getUsername(), Toast.LENGTH_SHORT).show();
         Log.e(MainActivity.class.getSimpleName(), application.getAuth().getPreferences().getString(AUTH_PREFERENCS_JSON_INFORMATION, null));
-
-
     }
 
     private void getNotificationExtras() {
@@ -207,7 +205,10 @@ public class MainActivity extends BaseAuthenticationActivity implements OnMapRea
         super.onResume();
         presenter.loadContacts(jsonInformation);
         notifyAdapterAboutChanged();
-        currentUser = users.get(0);
+        if(!users.isEmpty())
+        {
+            currentUser = users.get(0);
+        }
     }
 
     private void notifyAdapterAboutChanged() {

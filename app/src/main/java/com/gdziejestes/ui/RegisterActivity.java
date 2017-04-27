@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.gdziejestes.R;
 import com.gdziejestes.common.DataValidator;
+import com.gdziejestes.core.services.DeleteToken;
 import com.gdziejestes.core.services.DeleteTokenService;
 import com.gdziejestes.model.entities.Accounts;
 import com.gdziejestes.ui.mainactivity.MainActivity;
@@ -124,6 +125,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             {
                 //getMyApp().getAuth().setPreferences(response.json);
                 Intent intent = new Intent(this, LoginActivity.class);
+                new DeleteToken(application).execute();
+                getMyApp().getAuth().logout();
                 //intent.putExtra(JSON_EXTRAS, response.json);
                 startActivity(intent);
             }
