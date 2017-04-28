@@ -5,7 +5,7 @@
     <string name="email">Email</string>
     <string name="login">Zaloguj</string>
     <string name="already_account">Juz masz konto? Zaloguj</string>
-    <string name="register">Zarejstruj się</string>
+    <string name="register">Zarejestruj się</string>
     <string name="name">Imie</string>
     <string name="title_activity_maps">Map</string>
     <string name="action_add_friend">dodaj znajomego</string>
@@ -13,7 +13,7 @@
     <string name="settings">ustawienia</string>
     <string name="passwordRepeat">Powtórz hasło</string>
     <string name="username">Nazwa użytkownika</string>
-    <string name="therms_of_use">Akceptuję regulamin serwisu, którego wcale nie przeczytałem i raczej czytać nie będę ale i tak i tak akceptuję tym samym zgadzając się na przetwarzanie moich danych osobowych, które tu podaje.</string>
+    <string name="therms_of_use">Akceptuję regulamin serwisu, którego wcale nie przeczytałem i raczej czytać nie będę ale i tak i tak akceptuję tym samym zgadzając się na przetwarzanie moich danych osobowych, które tu podaje oraz na udostępnienie mojej lokalizacji.</string>
     <string name="logout">wyloguj</string>
     <string name="dodaj">Dodaj</string>
     <string name="refresh">odśwież</string>
