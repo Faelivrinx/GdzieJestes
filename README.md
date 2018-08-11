@@ -11,4 +11,6 @@ Simple android application used to following friends.
 - [x] Search Friends on Google Maps
 - [x] Add Friends
 - [x] Remove Friends
-- [] Remove Account
+- [x] Modify friends information
+- [ ] Search path to selected friend
+- [ ] Remove Account
